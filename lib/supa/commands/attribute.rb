@@ -4,9 +4,7 @@ module Supa
   module Commands
     class Attribute < Supa::Command
       def represent
-        value = with_getter? ? context.instance_exec(&getter) : context.send(name)
-
-        tree[name] = value
+        tree[name] = get_value
       end
     end
   end
