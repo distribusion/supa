@@ -3,24 +3,27 @@
 Ruby object → JSON serialization.
 
 [![Build Status](https://travis-ci.org/dasnotme/supa.svg?branch=master)](https://travis-ci.org/dasnotme/supa)
+[![Code Climate](https://codeclimate.com/github/dasnotme/supa/badges/gpa.svg)](https://codeclimate.com/github/dasnotme/supa)
+[![Test Coverage](https://codeclimate.com/github/dasnotme/supa/badges/coverage.svg)](https://codeclimate.com/github/dasnotme/supa/coverage)
+[![Issue Count](https://codeclimate.com/github/dasnotme/supa/badges/issue_count.svg)](https://codeclimate.com/github/dasnotme/supa)
 
 ## Introduction
 
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile
 
 ```ruby
 gem 'supa'
 ```
 
-And then execute:
+And then execute
 ```shell
 bundle install
 ```
 
-Or install it yourself as:
+Or install it yourself as
 ```
 gem install supa
 ```
