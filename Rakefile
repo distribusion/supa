@@ -8,7 +8,7 @@ end
 
 Rake::TestTask.new(:bench) do |t|
   t.libs << %w(spec lib)
-  t.test_files = FileList['spec/**/*_bench.rb']
+  t.test_files = FileList['spec/benchmarks/**/*_bench.rb']
 end
 
 task :default => :test
