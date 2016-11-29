@@ -2,11 +2,10 @@ require 'supa/commands/attribute'
 require 'supa/commands/object'
 require 'supa/commands/namespace'
 require 'supa/commands/collection'
-require 'supa/commands/polymorphic'
 
 module Supa
   class Builder
-    COMMANDS = %w(attribute object namespace collection polymorphic).freeze
+    COMMANDS = %w(attribute object namespace collection).freeze
 
     COMMANDS.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
