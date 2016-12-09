@@ -35,9 +35,4 @@ describe Supa::Builder do
     it '' do
     end
   end
-
-  describe '#polymorphic' do
-    it '' do
-    end
-  end
 end

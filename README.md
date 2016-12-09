@@ -83,7 +83,7 @@ class ArticleRepresenter
       end
     end
 
-    polymorphic :included, getter: proc { [self.author] } do
+    collection :included, getter: proc { [self.author] } do
       attribute :id
       attribute :type, getter: proc { 'authors' }
 
@@ -93,7 +93,7 @@ class ArticleRepresenter
       end
     end
 
-    polymorphic :included, getter: proc { self.comments } do
+    collection :included, append: true, getter: proc { self.comments } do
       attribute :id
       attribute :type, getter: proc { 'comments' }
 
@@ -176,8 +176,6 @@ ArticleRepresenter.new(Article.new).to_json
 ### `object`
 
 ### `collection`
-
-### `polymorphic`
 
 ## Development
 
