@@ -16,7 +16,11 @@ module Supa
     attr_reader :context, :tree, :name, :options, :block
 
     def get_value
-      options[:getter].is_a?(Proc) ? context.instance_exec(&options[:getter]) : context.send(name)
+      if options[:getter].is_a?(Proc)
+        context.instance_exec(&options[:getter])
+      else
+        context.is_a?(Hash) ? context[name] : context.send(name)
+      end
     end
   end
 end
