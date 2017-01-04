@@ -4,7 +4,7 @@ describe Supa::Representable do
   let(:article) { Supa::Fixtures.article }
   let(:author) { article.author }
   let(:comments) { article.comments }
-  let(:representer) { Supa::ArticleRepresenter.new(article) }
+  subject(:representer) { Supa::ArticleRepresenter.new(article) }
 
   describe '.define' do
     let(:represented) do
@@ -56,17 +56,15 @@ describe Supa::Representable do
       }
     end
 
-    subject { representer }
-
     describe '#to_hash' do
       it 'serializes to hash' do
-        subject.to_hash.must_equal(represented)
+        expect(subject.to_hash).to eq(represented)
       end
     end
 
     describe '#to_json' do
       it 'serializes to hash' do
-        subject.to_json.must_equal(represented.to_json)
+        expect(subject.to_json).to eq(represented.to_json)
       end
     end
   end
