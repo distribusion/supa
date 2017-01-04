@@ -6,6 +6,10 @@ module Supa
       @id = id
       @text = text
     end
+
+    def to_hash
+      {id: id, text: text}
+    end
   end
 
   module Fixtures

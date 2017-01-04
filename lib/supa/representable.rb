@@ -11,7 +11,7 @@ module Supa
       end
 
       def to_hash
-        Supa::Builder.new(context: object, tree: {}).tap do |builder|
+        Supa::Builder.new(@object, tree: {}, representer: self).tap do |builder|
           builder.instance_exec(&self.class.definition)
         end.to_hash
       end
@@ -19,9 +19,6 @@ module Supa
       def to_json
         to_hash.to_json
       end
-
-      private
-      attr_reader :object
     end
 
     module ClassMethods

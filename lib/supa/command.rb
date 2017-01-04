@@ -1,8 +1,9 @@
 module Supa
   class Command
-    def initialize(context:, tree:, name:, options: {}, &block)
-      @context = context
+    def initialize(object, tree:, representer:, name:, options: {}, &block)
+      @object = object
       @tree = tree
+      @representer = representer
       @name = name
       @options = options
       @block = block
@@ -13,14 +14,9 @@ module Supa
     end
 
     private
-    attr_reader :context, :tree, :name, :options, :block
 
     def get_value
-      if options[:getter].is_a?(Proc)
-        context.instance_exec(&options[:getter])
-      else
-        context.is_a?(Hash) ? context[name] : context.send(name)
-      end
+      CommandContext.new(@object, @representer).call(@options.fetch(:getter, @name))
     end
   end
 end

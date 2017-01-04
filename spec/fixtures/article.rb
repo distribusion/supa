@@ -12,6 +12,10 @@ module Supa
       @author = author
       @comments = comments
     end
+
+    def to_hash
+      {id: id, title: title, text: text, author: author.to_hash, comments: comments.map(&:to_hash)}
+    end
   end
 
   module Fixtures
@@ -21,11 +25,11 @@ module Supa
                     title: title || Supa::Sequence.word(20),
                     text: text || Supa::Sequence.word(40),
                     author: author || Supa::Fixtures.author,
-                    comments: comments || 2.times.map { Supa::Fixtures.comment })
+                    comments: comments || Array.new(2) { Supa::Fixtures.comment })
       end
 
       def article_with_comments(comment_count)
-        article(comments: comment_count.times.map { Supa::Fixtures.comment })
+        article(comments: Array.new(comment_count) { Supa::Fixtures.comment })
       end
     end
   end

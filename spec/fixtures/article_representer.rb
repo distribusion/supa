@@ -4,12 +4,12 @@ module Supa
 
     define do
       namespace :jsonapi do
-        attribute :version, getter: proc { 1.1 }
+        attribute :version, getter: proc { jsonapi_version }
       end
 
       namespace :data do
         attribute :id
-        attribute :type, getter: proc { 'articles' }
+        attribute :type, getter: :articles_type
 
         namespace :attributes do
           attribute :title
@@ -25,7 +25,7 @@ module Supa
           end
 
           namespace :comments do
-            collection :data, getter: proc { self.comments } do
+            collection :data, getter: :comments do
               attribute :id
               attribute :type, getter: proc { 'comments' }
             end
@@ -33,7 +33,7 @@ module Supa
         end
       end
 
-      polymorphic :included, getter: proc { [self.author] } do
+      polymorphic :included, getter: :author do
         attribute :id
         attribute :type, getter: proc { 'authors' }
 
@@ -43,7 +43,7 @@ module Supa
         end
       end
 
-      polymorphic :included, getter: proc { self.comments } do
+      polymorphic :included, getter: :comments do
         attribute :id
         attribute :type, getter: proc { 'comments' }
 
@@ -51,6 +51,14 @@ module Supa
           attribute :text
         end
       end
+    end
+
+    def jsonapi_version
+      1.1
+    end
+
+    def articles_type
+      'articles'
     end
   end
 end

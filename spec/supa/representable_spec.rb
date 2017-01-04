@@ -9,22 +9,22 @@ describe Supa::Representable do
   describe '.define' do
     let(:represented) do
       {
-        jsonapi: { version: 1.1 },
+        jsonapi: {version: 1.1},
         data: {
           id: article.id,
           type: 'articles',
           attributes: {
             title: article.title,
-            text: article.text,
+            text: article.text
           },
           relationships: {
             author: {
-              data: { id: author.id, type: 'authors' }
+              data: {id: author.id, type: 'authors'}
             },
             comments: {
               data: [
-                { id: comments[0].id, type: 'comments' },
-                { id: comments[1].id, type: 'comments' }
+                {id: comments[0].id, type: 'comments'},
+                {id: comments[1].id, type: 'comments'}
               ]
             }
           }
@@ -56,15 +56,33 @@ describe Supa::Representable do
       }
     end
 
-    describe '#to_hash' do
-      it 'serializes to hash' do
-        expect(representer.to_hash).to eq(represented)
+    context 'when decorating non-hash object' do
+      describe '#to_hash' do
+        it 'serializes to hash' do
+          expect(representer.to_hash).to eq(represented)
+        end
+      end
+
+      describe '#to_json' do
+        it 'serializes to hash' do
+          expect(representer.to_json).to eq(represented.to_json)
+        end
       end
     end
 
-    describe '#to_json' do
-      it 'serializes to hash' do
-        expect(representer.to_json).to eq(represented.to_json)
+    context 'when decorating hash' do
+      let(:representer) { Supa::ArticleRepresenter.new(article.to_hash) }
+
+      describe '#to_hash' do
+        it 'serializes to hash' do
+          expect(representer.to_hash).to eq(represented)
+        end
+      end
+
+      describe '#to_json' do
+        it 'serializes to hash' do
+          expect(representer.to_json).to eq(represented.to_json)
+        end
       end
     end
   end
