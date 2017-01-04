@@ -18,6 +18,8 @@ module Supa
     def get_value
       if options[:getter].is_a?(Proc)
         context.instance_exec(&options[:getter])
+      elsif options[:getter].is_a?(String) || options[:getter].is_a?(Numeric)
+        options[:getter]
       else
         context.is_a?(Hash) ? context[name] : context.send(name)
       end
