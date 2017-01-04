@@ -1,14 +1,6 @@
 require 'bundler/gem_tasks'
-require 'rake/testtask'
+require 'rspec/core/rake_task'
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << %w(spec lib)
-  t.test_files = FileList['spec/**/*_spec.rb']
-end
+RSpec::Core::RakeTask.new(:spec)
 
-Rake::TestTask.new(:bench) do |t|
-  t.libs << %w(spec lib)
-  t.test_files = FileList['spec/benchmarks/**/*_bench.rb']
-end
-
-task :default => :test
+task :default => :spec
