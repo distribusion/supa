@@ -7,7 +7,7 @@ describe 'Supa Benchmark', 'linear performance' do
   end
 
   def benchmark_execution_time
-    benchmark_times = (0..5).each_with_object([]) do |i, times|
+    benchmark_times = (0..5).each_with_object([]) do |_, times|
       times << Benchmark.realtime do
         yield
       end

@@ -179,6 +179,18 @@ ArticleRepresenter.new(Article.new).to_json
 
 ### `polymorphic`
 
+### :getter option
+
+Avoid passing Proc objects to `:getter` option because this is little slower than method name passing
+
+```ruby
+# Bad
+attribute :name, getter: -> { fetch_name }
+
+# Good
+attribute :name, getter: :fetch_name
+```
+
 ## Development
 
 To install dependencies
@@ -209,4 +221,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/dasnot
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

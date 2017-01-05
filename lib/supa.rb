@@ -1,7 +1,6 @@
 require 'supa/version'
 require 'supa/representable'
 require 'supa/command'
-require 'supa/command_context'
 require 'supa/commands/traits/collectionable'
 require 'supa/commands/attribute'
 require 'supa/commands/object'
