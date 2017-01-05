@@ -2,6 +2,8 @@
 engines:
   duplication:
     enabled: true
+    exclude_paths:
+      - spec/
     config:
       languages:
         ruby:
@@ -15,3 +17,4 @@ ratings:
   - "**.rb"
 exclude_paths:
   - tmp/
+  - spec/fixtures/
