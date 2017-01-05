@@ -2,22 +2,16 @@
 engines:
   duplication:
     enabled: true
-    exclude_fingerprints:
-    - 8fafabb5096a8bf78bd572e945af11c7
-    - ae15dfea2e23ace8e7ac8f970d624a67
-    - 47ba1ed25f6c2341a41c4be35a5575c5
-    - 3bde68650c7c2b328cb49485ce794235
-    - 190256b661c5354e34dc7a770e65da42
-    - 190256b661c5354e34dc7a770e65da42
     config:
       languages:
-      - ruby
-  fixme:
-    enabled: true
+        ruby:
+          mass_threshold: 30
   rubocop:
+    enabled: true
+  reek:
     enabled: true
 ratings:
   paths:
   - "**.rb"
 exclude_paths:
-- spec/
+  - tmp/

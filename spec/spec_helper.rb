@@ -3,8 +3,10 @@ SimpleCov.start
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-require 'json'
 require 'supa'
+
+require 'json'
+require 'pry-byebug'
 require 'rspec/core'
 require 'rspec/benchmark'
 require 'rspec/expectations'

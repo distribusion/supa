@@ -10,5 +10,5 @@ require 'supa'
 # require "pry"
 # Pry.start
 
-require 'irb'
-IRB.start
+require 'pry-byebug'
+Pry.start

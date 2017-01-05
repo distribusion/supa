@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'supa/version'
@@ -7,8 +6,12 @@ Gem::Specification.new do |spec|
   spec.name          = 'supa'
   spec.version       = Supa::VERSION
   spec.platform      = Gem::Platform::RUBY
-  spec.authors       = ['Andrey Duplichev', 'Jan Rietema']
-  spec.email         = ['andrey.duplichev@distribusion.com', 'jan.rietema@distribusion.com']
+  spec.authors       = ['Andrey Duplichev', 'Jan Rietema', 'Jakub Gorzelak']
+  spec.email         = %w(
+    andrey.duplichev@distribusion.com
+    jan.rietema@distribusion.com
+    jakub.gorzelak@distribusion.com
+  )
 
   spec.summary       = 'Ruby object → JSON serialization.'
   spec.description   = 'Ruby object → JSON serialization.'
@@ -25,9 +28,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.13'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'rspec-benchmark'
+  spec.add_development_dependency 'rspec-benchmark', '~> 0.2.0'
+  spec.add_development_dependency 'rubocop', '~> 0.45.0'
+  spec.add_development_dependency 'reek', '~> 4.5.0'
   spec.add_development_dependency 'simplecov', '~> 0.12'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0.0'
-  spec.add_development_dependency 'rubocop', '~> 0.45.0'
-  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry-byebug', '~> 3.4.0'
 end

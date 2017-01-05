@@ -2,10 +2,10 @@
 
 Ruby object → JSON serialization.
 
-[![Build Status](https://travis-ci.org/dasnotme/supa.svg?branch=master)](https://travis-ci.org/dasnotme/supa)
-[![Code Climate](https://codeclimate.com/github/dasnotme/supa/badges/gpa.svg)](https://codeclimate.com/github/dasnotme/supa)
-[![Test Coverage](https://codeclimate.com/github/dasnotme/supa/badges/coverage.svg)](https://codeclimate.com/github/dasnotme/supa/coverage)
-[![Issue Count](https://codeclimate.com/github/dasnotme/supa/badges/issue_count.svg)](https://codeclimate.com/github/dasnotme/supa)
+[![Build Status](https://travis-ci.org/distribusion/supa.svg?branch=master)](https://travis-ci.org/distribusion/supa)
+[![Code Climate](https://codeclimate.com/github/distribusion/supa/badges/gpa.svg)](https://codeclimate.com/github/distribusion/supa)
+[![Test Coverage](https://codeclimate.com/github/distribusion/supa/badges/coverage.svg)](https://codeclimate.com/github/distribusion/supa/coverage)
+[![Issue Count](https://codeclimate.com/github/distribusion/supa/badges/issue_count.svg)](https://codeclimate.com/github/distribusion/supa)
 
 ## Introduction
 
@@ -248,8 +248,8 @@ bin/console
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/dasnotme/supa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/distribusion/supa.
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
