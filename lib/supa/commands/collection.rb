@@ -4,7 +4,7 @@ module Supa
       include Supa::Commands::Collectionable
 
       def represent
-        @tree[@name] = []
+        @tree[@name] = [] unless @options[:squash]
 
         collection.each do |element|
           @tree[@name] << {}

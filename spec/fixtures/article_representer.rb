@@ -33,7 +33,7 @@ module Supa
         end
       end
 
-      polymorphic :included, getter: :author do
+      collection :included, getter: :author do
         attribute :id
         attribute :type, getter: proc { 'authors' }
 
@@ -43,7 +43,7 @@ module Supa
         end
       end
 
-      polymorphic :included, getter: :comments do
+      collection :included, getter: :comments, squash: true do
         attribute :id
         attribute :type, getter: proc { 'comments' }
 

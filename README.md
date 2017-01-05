@@ -83,7 +83,7 @@ class ArticleRepresenter
       end
     end
 
-    polymorphic :included, getter: proc { [self.author] } do
+    collection :included, getter: proc { [self.author] } do
       attribute :id
       attribute :type, getter: proc { 'authors' }
 
@@ -93,7 +93,7 @@ class ArticleRepresenter
       end
     end
 
-    polymorphic :included, getter: proc { self.comments } do
+    collection :included, getter: proc { self.comments }, squash: true  do
       attribute :id
       attribute :type, getter: proc { 'comments' }
 
@@ -177,9 +177,42 @@ ArticleRepresenter.new(Article.new).to_json
 
 ### `collection`
 
-### `polymorphic`
+#### `:squash` option
 
-### :getter option
+Passing `true` to `:squash` option results in merging collection with the previous one
+
+```ruby
+class AnimalsRepresenter
+  include Supa::Representable
+
+  define do
+    collection :animals, getter: -> { [{name: 'Rex', type: 'dogs'}] } do
+      attribute :name
+      attribute :type
+    end
+
+    collection :animals, getter: -> { [{name: 'Tom', type: 'cats'}] }, squash: true do
+      attribute :name
+      attribute :type
+    end
+  end
+end
+```
+
+```ruby
+ AnimalsRepresenter.new(nil).to_hash
+```
+
+```ruby
+{
+  animals: [
+    {name: 'Rex', type: 'dogs'},
+    {name: 'Tom', type: 'cats'}
+  ]
+}
+```
+
+### `:getter` option
 
 Avoid passing Proc objects to `:getter` option because this is little slower than method name passing
 
