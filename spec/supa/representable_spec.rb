@@ -42,14 +42,16 @@ describe Supa::Representable do
             id: comments[0].id,
             type: 'comments',
             attributes: {
-              text: comments[0].text
+              text: comments[0].text,
+              maxlength: 200
             }
           },
           {
             id: comments[-1].id,
             type: 'comments',
             attributes: {
-              text: comments[-1].text
+              text: comments[-1].text,
+              maxlength: 200
             }
           }
         ]

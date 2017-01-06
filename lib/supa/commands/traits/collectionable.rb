@@ -4,7 +4,7 @@ module Supa
       private
 
       def collection
-        collection = get_value
+        collection = value
         collection.is_a?(Array) ? collection : [collection]
       end
     end

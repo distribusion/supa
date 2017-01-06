@@ -15,17 +15,31 @@ module Supa
 
     private
 
-    def get_value
-      return instance_exec(&method) if method.is_a?(Proc)
-      return @object.send(method) if @object.respond_to?(method)
-      return @object[method] if @object.is_a?(Hash) && @object.key?(method)
-      return @representer.send(method) if @representer.respond_to?(method)
+    def value
+      return instance_exec(&value_accessor) if value_accessor.respond_to?(:call)
 
-      raise_no_method_error(method)
+      extracted_value = derived_value_from_object(@object) || derived_value_from_object(@representer)
+      extracted_value ||= literal_value
+
+      raise_no_method_error(value_accessor) if extracted_value.nil?
+      extracted_value
     end
 
-    def method
-      @method ||= @options.fetch(:getter, @name)
+    def value_accessor
+      @value_accessor ||= @options.fetch(:getter, @name)
+    end
+
+    def derived_value_from_object(object)
+      if value_accessor.respond_to?(:to_sym) && object.respond_to?(value_accessor)
+        object.send(value_accessor.to_sym)
+      elsif object.is_a?(Hash)
+        object.dig(value_accessor)
+      end
+    end
+
+    def literal_value
+      return if value_accessor.respond_to?(:call)
+      value_accessor unless value_accessor.is_a?(Symbol) || value_accessor.is_a?(Enumerable)
     end
 
     def raise_no_method_error(method_sym)

@@ -49,6 +49,7 @@ module Supa
 
         namespace :attributes do
           attribute :text
+          attribute :maxlength, getter: 200
         end
       end
     end

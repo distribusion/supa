@@ -8,8 +8,8 @@ describe Supa::Command do
   let(:name) { :id }
   let(:options) { {} }
 
-  describe '#get_value' do
-    subject(:get_value) { command.send(:get_value) }
+  describe '#value' do
+    subject(:value) { command.send(:value) }
 
     let(:options) { {getter: getter} }
 
@@ -18,7 +18,7 @@ describe Supa::Command do
         let(:getter) { :not_existing_method }
 
         it 'raises NoMethodError' do
-          expect { get_value }.to raise_error(
+          expect { value }.to raise_error(
             NoMethodError,
             /undefined method `not_existing_method' for #<Supa::Article:.+> or #<Supa::ArticleRepresenter:.+>/
           )
@@ -30,7 +30,7 @@ describe Supa::Command do
 
         before { allow(object).to receive(:id).and_return(5) }
 
-        it { expect(get_value).to eq(5) }
+        it { expect(value).to eq(5) }
       end
 
       context 'when representer responds to method passed in getter option' do
@@ -39,7 +39,7 @@ describe Supa::Command do
 
         before { allow(representer).to receive(:articles_type).and_return('articlesxxx') }
 
-        it { expect(get_value).to eq('articlesxxx') }
+        it { expect(value).to eq('articlesxxx') }
       end
     end
 
@@ -48,7 +48,7 @@ describe Supa::Command do
 
       context 'when neither object nor representer respond to method called inside Proc block' do
         it 'raises NoMethodError' do
-          expect { get_value }.to raise_error(
+          expect { value }.to raise_error(
             NoMethodError,
             /undefined method `not_existing_method' for #<Supa::Article:.+> or #<Supa::ArticleRepresenter:.+>/
           )
@@ -60,7 +60,7 @@ describe Supa::Command do
 
         before { allow(object).to receive(:id).and_return(6) }
 
-        it { expect(get_value).to eq(6) }
+        it { expect(value).to eq(6) }
       end
 
       context 'when representer responds to method passed in getter option' do
@@ -69,7 +69,7 @@ describe Supa::Command do
 
         before { allow(representer).to receive(:articles_type).and_return('articleszzz') }
 
-        it { expect(get_value).to eq('articleszzz') }
+        it { expect(value).to eq('articleszzz') }
       end
     end
   end

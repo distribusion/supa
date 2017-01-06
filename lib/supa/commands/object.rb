@@ -4,7 +4,7 @@ module Supa
       def represent
         @tree[@name] = {}
 
-        Supa::Builder.new(get_value, tree: @tree[@name], representer: @representer).instance_exec(&@block)
+        Supa::Builder.new(value, tree: @tree[@name], representer: @representer).instance_exec(&@block)
       end
     end
   end

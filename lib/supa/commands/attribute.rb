@@ -2,7 +2,7 @@ module Supa
   module Commands
     class Attribute < Supa::Command
       def represent
-        @tree[@name] = get_value
+        @tree[@name] = value
       end
     end
   end
