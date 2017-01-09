@@ -59,7 +59,7 @@ class ArticleRepresenter
 
     namespace :data do
       attribute :id
-      attribute :type, getter: 'articles'
+      attribute :type, getter: proc { 'articles' }
 
       namespace :attributes do
         attribute :title
@@ -70,14 +70,14 @@ class ArticleRepresenter
         object :author do
           namespace :data do
             attribute :id
-            attribute :type, 'authors'
+            attribute :type, proc { 'authors' }
           end
         end
 
         namespace :comments do
           collection :data, getter: :comments do
             attribute :id
-            attribute :type, getter: 'comments'
+            attribute :type, getter: proc { 'comments' }
           end
         end
       end
@@ -85,7 +85,7 @@ class ArticleRepresenter
 
     collection :included, getter: proc { [self.author] } do
       attribute :id
-      attribute :type, getter: 'authors'
+      attribute :type, getter: proc { 'authors' }
 
       namespace :attributes do
         attribute :first_name
@@ -95,7 +95,7 @@ class ArticleRepresenter
 
     collection :included, getter: :comments, squash: true  do
       attribute :id
-      attribute :type, getter: 'comments'
+      attribute :type, getter: proc { 'comments' }
 
       namespace :attributes do
         attribute :text
@@ -320,6 +320,11 @@ ExampleRepresenter.new({}).to_hash
   type: 'documentation',
   time: 2017-01-09 14:45:00 +0100
 }
+```
+If a literal String clashes with a method name it must be wrapped in a proc (as per 3. above):
+```
+  define do
+    attribute :type, getter: proc { 'articles' }
 ```
 
 ### `namespace`
