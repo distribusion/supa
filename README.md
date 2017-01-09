@@ -244,7 +244,7 @@ class ExampleRepresenter
   include Supa::Representable
 
   define do
-    attribute :name, getter: Proc.new { appellation.upcase }
+    attribute :name, getter: proc { appellation.upcase }
   end
 end
 
@@ -274,7 +274,7 @@ class ExampleRepresenter
   include Supa::Representable
 
   define do
-    attribute :name, getter: Proc.new { appellation(0) }
+    attribute :name, getter: proc { appellation(0) }
   end
 
   def appellation(index)
