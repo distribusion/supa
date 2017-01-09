@@ -54,12 +54,12 @@ class ArticleRepresenter
 
   define do
     namespace :jsonapi do
-      attribute :version, getter: proc { 1.1 }
+      attribute :version, getter: 1.1
     end
 
     namespace :data do
       attribute :id
-      attribute :type, getter: proc { 'articles' }
+      attribute :type, getter: 'articles'
 
       namespace :attributes do
         attribute :title
@@ -70,14 +70,14 @@ class ArticleRepresenter
         object :author do
           namespace :data do
             attribute :id
-            attribute :type, getter: proc { 'authors' }
+            attribute :type, 'authors'
           end
         end
 
         namespace :comments do
-          collection :data, getter: proc { self.comments } do
+          collection :data, getter: :comments do
             attribute :id
-            attribute :type, getter: proc { 'comments' }
+            attribute :type, getter: 'comments'
           end
         end
       end
@@ -85,7 +85,7 @@ class ArticleRepresenter
 
     collection :included, getter: proc { [self.author] } do
       attribute :id
-      attribute :type, getter: proc { 'authors' }
+      attribute :type, getter: 'authors'
 
       namespace :attributes do
         attribute :first_name
@@ -93,9 +93,9 @@ class ArticleRepresenter
       end
     end
 
-    collection :included, getter: proc { self.comments }, squash: true  do
+    collection :included, getter: :comments, squash: true  do
       attribute :id
-      attribute :type, getter: proc { 'comments' }
+      attribute :type, getter: 'comments'
 
       namespace :attributes do
         attribute :text
@@ -170,6 +170,157 @@ ArticleRepresenter.new(Article.new).to_json
 ```
 
 ### `attribute`
+Attributes will be retrieved from correspondingly named instance methods unless a getter is defined:
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name
+  end
+end
+
+ExampleRepresenter.new(OpenStruct.new(name: 'Heidi')).to_hash
+
+{
+  name: 'Heidi'
+}
+```
+A getter can take several forms:
+
+*1. Method name:*
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: :full_name
+  end
+end
+
+class Person
+  attr_accessor :full_name
+end
+
+example = Person.new
+example.full_name = 'Heidi Shepherd'
+
+ExampleRepresenter.new(example).to_hash
+
+{
+  name: 'Heidi Shepherd'
+}
+```
+The lookup order is to first check the object instance and then the representer for a matching method.
+
+*2. Hash key:*
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: 'full_name'
+  end
+end
+
+example = {
+  'full_name' => 'Heidi Shepherd'
+}
+
+ExampleRepresenter.new(example).to_hash
+
+{
+  name: 'Heidi Shepherd'
+}
+
+```
+
+*3. Proc:*
+A Proc getter will be evaluated in the context of the object instance. Avoid using Proc getters for accessing
+methods or attributes on the object (this is done in the examples below for simplicity) and use the syntax above instead.
+
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: Proc.new { appellation.upcase }
+  end
+end
+
+class Person
+  def initialize(name)
+    @name = name
+  end
+
+  def appellation
+    "Mr or Mrs #{@name}"
+  end
+end
+
+example = Person.new('Heidi')
+
+ExampleRepresenter.new(example).to_hash
+
+{
+  name: 'MR OR MRS HEIDI'
+}
+
+```
+
+Methods can also be defined on the Representer class to be referenced in a getter Proc:
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: Proc.new { appellation(0) }
+  end
+
+  def appellation(index)
+    "Dear #{@object.name.split(' ')[index]}"
+  end
+end
+
+class Person
+  def initialize(name)
+    @name = name
+  end
+
+  attr_reader :name
+end
+
+example = Person.new('Heidi Shepherd')
+
+ExampleRepresenter.new(example).to_hash
+
+{
+  name: 'Dear Heidi'
+}
+
+```
+
+*4. Literal Value:*
+Literal values can be supplied as `String`, `Numeric`, `Time`, `Date`, etc.
+```
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :version, getter: 1.0
+    attribute :type, getter: 'documentation'
+    attribute :time, getter: Time.now
+  end
+end
+
+ExampleRepresenter.new({}).to_hash
+
+{
+  version: 1.0,
+  type: 'documentation',
+  time: 2017-01-09 14:45:00 +0100
+}
+```
 
 ### `namespace`
 
