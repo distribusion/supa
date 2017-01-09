@@ -3,9 +3,9 @@
 Ruby object → JSON serialization.
 
 [![Build Status](https://travis-ci.org/distribusion/supa.svg?branch=master)](https://travis-ci.org/distribusion/supa)
-[![Code Climate](https://codeclimate.com/github/distribusion/supa/badges/gpa.svg)](https://codeclimate.com/github/distribusion/supa)
-[![Test Coverage](https://codeclimate.com/github/distribusion/supa/badges/coverage.svg)](https://codeclimate.com/github/distribusion/supa/coverage)
-[![Issue Count](https://codeclimate.com/github/distribusion/supa/badges/issue_count.svg)](https://codeclimate.com/github/distribusion/supa)
+[![Code Climate](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/gpa.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/feed)
+[![Test Coverage](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/coverage.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/coverage)
+[![Issue Count](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/issue_count.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/feed)
 
 ## Introduction
 
