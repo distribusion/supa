@@ -24,7 +24,7 @@ bundle install
 ```
 
 Or install it yourself as
-```
+```shell
 gem install supa
 ```
 
@@ -171,7 +171,7 @@ ArticleRepresenter.new(Article.new).to_json
 
 ## `attribute`
 Attributes will be retrieved from correspondingly named instance methods unless a getter is defined:
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -189,7 +189,7 @@ ExampleRepresenter.new(OpenStruct.new(name: 'Heidi')).to_hash
 A getter can take several forms:
 
 ### 1. Method name
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -214,7 +214,7 @@ ExampleRepresenter.new(example).to_hash
 The lookup order is to first check the object instance and then the representer for a matching method.
 
 ###2. Hash key
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -239,7 +239,7 @@ ExampleRepresenter.new(example).to_hash
 A Proc getter will be evaluated in the context of the object instance. Avoid using Proc getters for accessing
 methods or attributes on the object (this is done in the examples below for simplicity) and use the syntax above instead.
 
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -269,7 +269,7 @@ ExampleRepresenter.new(example).to_hash
 ```
 
 Methods can also be defined on the Representer class to be referenced in a getter Proc:
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -302,7 +302,7 @@ ExampleRepresenter.new(example).to_hash
 
 ###4. Literal Value
 Literal values can be supplied as `String`, `Numeric`, `Time`, `Date`, etc.
-```
+```ruby
 class ExampleRepresenter
   include Supa::Representable
 
@@ -322,7 +322,7 @@ ExampleRepresenter.new({}).to_hash
 }
 ```
 If a literal String clashes with a method name it must be wrapped in a proc (as per 3. above):
-```
+```ruby
   define do
     attribute :type, getter: proc { 'articles' }
 ```
