@@ -13,7 +13,7 @@ module Supa
       klass = Supa::Commands.const_get(command.capitalize)
 
       define_method command do |name, getter = nil, options = {}, &block|
-        klass.new(representable: representable,
+        klass.new(representer: representer,
                   context: context,
                   tree: tree,
                   name: name,
@@ -23,8 +23,8 @@ module Supa
       end
     end
 
-    def initialize(representable:, context:, tree:)
-      @representable = representable
+    def initialize(representer:, context:, tree:)
+      @representer = representer
       @context = context
       @tree = tree
     end
@@ -38,6 +38,7 @@ module Supa
     end
 
     private
-    attr_reader :representable, :context, :tree
+
+    attr_reader :representer, :context, :tree
   end
 end
