@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Supa::Commands::Collection do
+describe Supa::Commands::Virtual do
   describe '#apply_modifier' do
     it '' do
     end

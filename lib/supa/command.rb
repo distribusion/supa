@@ -1,10 +1,11 @@
 module Supa
   class Command
-    def initialize(object, tree:, representer:, name:, options: {}, &block)
-      @object = object
+    def initialize(representable:, context:, tree:, name:, getter:, options: {}, &block)
+      @representable = representable
+      @context = context
       @tree = tree
-      @representer = representer
       @name = name
+      @getter = getter
       @options = options
       @block = block
     end
@@ -14,43 +15,50 @@ module Supa
     end
 
     private
+    attr_reader :representable, :context, :tree, :name, :options, :block
 
-    def value
-      return instance_exec(&value_accessor) if value_accessor.respond_to?(:call)
-
-      extracted_value = derived_value_from_object(@object) || derived_value_from_object(@representer)
-      extracted_value ||= literal_value
-
-      raise_no_method_error(value_accessor) if extracted_value.nil?
-      extracted_value
+    def apply_modifier(value)
+      with_modifier? ? representable.send(modifier, value) : value
     end
 
-    def value_accessor
-      @value_accessor ||= @options.fetch(:getter, @name)
+    def modifier
+      options[:modifier]
     end
 
-    def derived_value_from_object(object)
-      if value_accessor.respond_to?(:to_sym) && object.respond_to?(value_accessor)
-        object.send(value_accessor.to_sym)
-      elsif object.is_a?(Hash)
-        object.dig(value_accessor)
+    def with_modifier?
+      !!options[:modifier]
+    end
+
+    def static_value
+      value = getter
+
+      apply_modifier(value)
+    end
+
+    def dynamic_value
+      value = if exec_on_object?
+        value_from_object
+      else
+        value_from_representer
       end
+
+      apply_modifier(value)
     end
 
-    def literal_value
-      return if value_accessor.respond_to?(:call)
-      value_accessor unless value_accessor.is_a?(Symbol) || value_accessor.is_a?(Enumerable)
+    def exec_on_object?
+      options[:exec_context] != :representer
     end
 
-    def raise_no_method_error(method_sym)
-      raise NoMethodError, "undefined method `#{method_sym}' for #{@object} or #{@representer}"
+    def value_from_object
+      context.is_a?(Hash) ? context[getter] : context.send(getter)
     end
 
-    def method_missing(method_sym, *args, &block)
-      return @representer.send(method_sym, *args, &block) if @representer.respond_to?(method_sym)
-      return @object.send(method_sym, *args, &block) if @object.respond_to?(method_sym)
+    def value_from_representer
+      representable.send(getter)
+    end
 
-      raise_no_method_error(method_sym)
+    def getter
+      @getter || @name
     end
   end
 end

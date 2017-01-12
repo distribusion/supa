@@ -2,9 +2,9 @@ require 'supa/command'
 
 module Supa
   module Commands
-    class Collection < Supa::Command
+    class Append < Supa::Command
       def represent
-        tree[name] = []
+        tree[name] ||= []
 
         Array(dynamic_value).each do |element|
           tree[name] << {}

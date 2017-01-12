@@ -2,9 +2,9 @@ require 'supa/command'
 
 module Supa
   module Commands
-    class Attribute < Supa::Command
+    class Virtual < Supa::Command
       def represent
-        tree[name] = dynamic_value
+        tree[name] = static_value
       end
     end
   end

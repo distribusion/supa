@@ -2,10 +2,10 @@
 
 Ruby object → JSON serialization.
 
-[![Build Status](https://travis-ci.org/distribusion/supa.svg?branch=master)](https://travis-ci.org/distribusion/supa)
-[![Code Climate](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/gpa.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/feed)
-[![Test Coverage](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/coverage.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/coverage)
-[![Issue Count](https://codeclimate.com/repos/587387071c36ea7203000e0d/badges/19b714c64bf6f028a58c/issue_count.svg)](https://codeclimate.com/repos/587387071c36ea7203000e0d/feed)
+[![Build Status](https://travis-ci.org/dasnotme/supa.svg?branch=master)](https://travis-ci.org/dasnotme/supa)
+[![Code Climate](https://codeclimate.com/github/dasnotme/supa/badges/gpa.svg)](https://codeclimate.com/github/dasnotme/supa)
+[![Test Coverage](https://codeclimate.com/github/dasnotme/supa/badges/coverage.svg)](https://codeclimate.com/github/dasnotme/supa/coverage)
+[![Issue Count](https://codeclimate.com/github/dasnotme/supa/badges/issue_count.svg)](https://codeclimate.com/github/dasnotme/supa)
 
 ## Introduction
 
@@ -24,7 +24,7 @@ bundle install
 ```
 
 Or install it yourself as
-```shell
+```
 gem install supa
 ```
 
@@ -49,60 +49,75 @@ end
 ```
 
 ```ruby
-class ArticleRepresenter
-  include Supa::Representable
+module Supa
+  class ArticleRepresenter
+    include Supa::Representable
 
-  define do
-    namespace :jsonapi do
-      attribute :version, getter: 1.1
-    end
-
-    namespace :data do
-      attribute :id
-      attribute :type, getter: proc { 'articles' }
-
-      namespace :attributes do
-        attribute :title
-        attribute :text
+    define do
+      namespace :jsonapi do
+        virtual :version, 1.1, modifier: :to_s
       end
 
-      namespace :relationships do
-        object :author do
-          namespace :data do
-            attribute :id
-            attribute :type, proc { 'authors' }
-          end
+      namespace :meta do
+        attribute :locale, :language, exec_context: :representer
+      end
+
+      namespace :data do
+        attribute :id
+        virtual :type, 'articles'
+
+        namespace :attributes do
+          attribute :title
+          attribute :text
         end
 
-        namespace :comments do
-          collection :data, getter: :comments do
-            attribute :id
-            attribute :type, getter: proc { 'comments' }
+        namespace :relationships do
+          object :author do
+            namespace :data do
+              attribute :id
+              virtual :type, 'authors'
+            end
           end
+
+          namespace :comments do
+            collection :data, :comments do
+              attribute :id
+              virtual :type, 'comments'
+            end
+          end
+        end
+      end
+
+      collection :included, :author do
+        attribute :id
+        virtual :type, 'authors'
+
+        namespace :attributes do
+          attribute :first_name
+          attribute :last_name
+        end
+      end
+
+      append :included, :comments do
+        attribute :id
+        virtual :type, 'comments'
+
+        namespace :attributes do
+          attribute :text
         end
       end
     end
 
-    collection :included, getter: proc { [self.author] } do
-      attribute :id
-      attribute :type, getter: proc { 'authors' }
-
-      namespace :attributes do
-        attribute :first_name
-        attribute :last_name
-      end
+    def to_s(value)
+      value.to_s
     end
 
-    collection :included, getter: :comments, squash: true  do
-      attribute :id
-      attribute :type, getter: proc { 'comments' }
-
-      namespace :attributes do
-        attribute :text
-      end
+    def language
+      'en'
     end
   end
 end
+
 ```
 
 ```ruby
@@ -112,7 +127,10 @@ ArticleRepresenter.new(Article.new).to_json
 ```json
 {
   "jsonapi": {
-    "version": 1.1
+    "version": "1.1"
+  },
+  "meta": {
+    "locale": "en"
   },
   "data": {
     "id": "7aa15512-1f9d-4a86-98ad-4bb0aae487a2",
@@ -169,216 +187,17 @@ ArticleRepresenter.new(Article.new).to_json
 }
 ```
 
-## `attribute`
-Attributes will be retrieved from correspondingly named instance methods unless a getter is defined:
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
+### `attribute`
 
-  define do
-    attribute :name
-  end
-end
+### `virtual`
 
-ExampleRepresenter.new(OpenStruct.new(name: 'Heidi')).to_hash
+### `namespace`
 
-{
-  name: 'Heidi'
-}
-```
-A getter can take several forms:
+### `object`
 
-### 1. Method name
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
+### `collection`
 
-  define do
-    attribute :name, getter: :full_name
-  end
-end
-
-class Person
-  attr_accessor :full_name
-end
-
-example = Person.new
-example.full_name = 'Heidi Shepherd'
-
-ExampleRepresenter.new(example).to_hash
-
-{
-  name: 'Heidi Shepherd'
-}
-```
-The lookup order is to first check the object instance and then the representer for a matching method.
-
-###2. Hash key
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
-
-  define do
-    attribute :name, getter: 'full_name'
-  end
-end
-
-example = {
-  'full_name' => 'Heidi Shepherd'
-}
-
-ExampleRepresenter.new(example).to_hash
-
-{
-  name: 'Heidi Shepherd'
-}
-
-```
-
-###3. Proc
-A Proc getter will be evaluated in the context of the object instance. Avoid using Proc getters for accessing
-methods or attributes on the object (this is done in the examples below for simplicity) and use the syntax above instead.
-
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
-
-  define do
-    attribute :name, getter: proc { appellation.upcase }
-  end
-end
-
-class Person
-  def initialize(name)
-    @name = name
-  end
-
-  def appellation
-    "Mr or Mrs #{@name}"
-  end
-end
-
-example = Person.new('Heidi')
-
-ExampleRepresenter.new(example).to_hash
-
-{
-  name: 'MR OR MRS HEIDI'
-}
-
-```
-
-Methods can also be defined on the Representer class to be referenced in a getter Proc:
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
-
-  define do
-    attribute :name, getter: proc { appellation(0) }
-  end
-
-  def appellation(index)
-    "Dear #{@object.name.split(' ')[index]}"
-  end
-end
-
-class Person
-  def initialize(name)
-    @name = name
-  end
-
-  attr_reader :name
-end
-
-example = Person.new('Heidi Shepherd')
-
-ExampleRepresenter.new(example).to_hash
-
-{
-  name: 'Dear Heidi'
-}
-
-```
-
-###4. Literal Value
-Literal values can be supplied as `String`, `Numeric`, `Time`, `Date`, etc.
-```ruby
-class ExampleRepresenter
-  include Supa::Representable
-
-  define do
-    attribute :version, getter: 1.0
-    attribute :type, getter: 'documentation'
-    attribute :time, getter: Time.now
-  end
-end
-
-ExampleRepresenter.new({}).to_hash
-
-{
-  version: 1.0,
-  type: 'documentation',
-  time: 2017-01-09 14:45:00 +0100
-}
-```
-If a literal String clashes with a method name it must be wrapped in a proc (as per 3. above):
-```ruby
-  define do
-    attribute :type, getter: proc { 'articles' }
-```
-
-## `namespace`
-
-## `object`
-
-## `collection`
-
-### `:squash` option
-
-Passing `true` to `:squash` option results in merging collection with the previous one
-
-```ruby
-class AnimalsRepresenter
-  include Supa::Representable
-
-  define do
-    collection :animals, getter: -> { [{name: 'Rex', type: 'dogs'}] } do
-      attribute :name
-      attribute :type
-    end
-
-    collection :animals, getter: -> { [{name: 'Tom', type: 'cats'}] }, squash: true do
-      attribute :name
-      attribute :type
-    end
-  end
-end
-```
-
-```ruby
- AnimalsRepresenter.new(nil).to_hash
-```
-
-```ruby
-{
-  animals: [
-    {name: 'Rex', type: 'dogs'},
-    {name: 'Tom', type: 'cats'}
-  ]
-}
-```
-
-### `:getter` option
-
-Avoid passing Proc objects to `:getter` option because this is little slower than method name passing
-
-```ruby
-# Bad
-attribute :name, getter: -> { fetch_name }
-
-# Good
-attribute :name, getter: :fetch_name
-```
+### `append`
 
 ## Development
 
@@ -404,9 +223,10 @@ bin/console
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/distribusion/supa.
-This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dasnotme/supa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
