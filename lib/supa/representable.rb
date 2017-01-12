@@ -6,12 +6,12 @@ module Supa
     end
 
     module InstanceMethods
-      def initialize(object)
-        @object = object
+      def initialize(representee)
+        @representee = representee
       end
 
       def to_hash
-        Supa::Builder.new(representer: self, context: object, tree: {}).tap do |builder|
+        Supa::Builder.new(representer: self, context: representee, tree: {}).tap do |builder|
           builder.instance_exec(&self.class.definition)
         end.to_hash
       end
@@ -20,9 +20,7 @@ module Supa
         to_hash.to_json
       end
 
-      private
-
-      attr_reader :object
+      attr_reader :representee
     end
 
     module ClassMethods
