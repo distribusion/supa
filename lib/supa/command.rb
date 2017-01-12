@@ -1,11 +1,10 @@
 module Supa
   class Command
-    def initialize(representable:, context:, tree:, name:, getter:, options: {}, &block)
-      @representable = representable
+    def initialize(representer:, context:, tree:, name:, options: {}, &block)
+      @representer = representer
       @context = context
       @tree = tree
       @name = name
-      @getter = getter
       @options = options
       @block = block
     end
@@ -15,10 +14,10 @@ module Supa
     end
 
     private
-    attr_reader :representable, :context, :tree, :name, :options, :block
+    attr_reader :representer, :context, :tree, :name, :options, :block
 
     def apply_modifier(value)
-      with_modifier? ? representable.send(modifier, value) : value
+      with_modifier? ? representer.send(modifier, value) : value
     end
 
     def modifier
@@ -54,11 +53,11 @@ module Supa
     end
 
     def value_from_representer
-      representable.send(getter)
+      representer.send(getter)
     end
 
     def getter
-      @getter || @name
+      options[:getter] || @name
     end
   end
 end

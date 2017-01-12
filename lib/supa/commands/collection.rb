@@ -9,7 +9,7 @@ module Supa
         Array(dynamic_value).each do |element|
           tree[name] << {}
 
-          Supa::Builder.new(representable: representable, context: element, tree: tree[name][-1]).instance_exec(&block)
+          Supa::Builder.new(representer: representer, context: element, tree: tree[name][-1]).instance_exec(&block)
         end
       end
     end

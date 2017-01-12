@@ -6,7 +6,7 @@ module Supa
       def represent
         tree[name] = {}
 
-        Supa::Builder.new(representable: representable, context: context, tree: tree[name]).instance_exec(&block)
+        Supa::Builder.new(representer: representer, context: context, tree: tree[name]).instance_exec(&block)
       end
     end
   end

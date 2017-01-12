@@ -10,7 +10,10 @@ describe Supa::Representable do
     let(:represented) do
       {
         jsonapi: { version: '1.1' },
-        meta: { locale: 'en' },
+        meta: {
+          locale: 'en',
+          date: "#{Date.today.iso8601}"
+        },
         data: {
           id: article.id,
           type: 'articles',
