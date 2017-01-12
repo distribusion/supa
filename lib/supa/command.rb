@@ -1,9 +1,11 @@
 module Supa
   class Command
-    def initialize(context:, tree:, name:, options: {}, &block)
+    def initialize(representable:, context:, tree:, name:, getter:, options: {}, &block)
+      @representable = representable
       @context = context
       @tree = tree
       @name = name
+      @getter = getter
       @options = options
       @block = block
     end
@@ -13,14 +15,50 @@ module Supa
     end
 
     private
-    attr_reader :context, :tree, :name, :options, :block
+    attr_reader :representable, :context, :tree, :name, :options, :block
 
-    def get_value
-      if options[:getter].is_a?(Proc)
-        context.instance_exec(&options[:getter])
+    def apply_modifier(value)
+      with_modifier? ? representable.send(modifier, value) : value
+    end
+
+    def modifier
+      options[:modifier]
+    end
+
+    def with_modifier?
+      !!options[:modifier]
+    end
+
+    def static_value
+      value = getter
+
+      apply_modifier(value)
+    end
+
+    def dynamic_value
+      value = if exec_on_object?
+        value_from_object
       else
-        context.is_a?(Hash) ? context[name] : context.send(name)
+        value_from_representer
       end
+
+      apply_modifier(value)
+    end
+
+    def exec_on_object?
+      options[:exec_context] != :representer
+    end
+
+    def value_from_object
+      context.is_a?(Hash) ? context[getter] : context.send(getter)
+    end
+
+    def value_from_representer
+      representable.send(getter)
+    end
+
+    def getter
+      @getter || @name
     end
   end
 end

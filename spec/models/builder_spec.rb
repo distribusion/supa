@@ -21,6 +21,11 @@ describe Supa::Builder do
     end
   end
 
+  describe '#virtual' do
+    it '' do
+    end
+  end
+
   describe '#namespace' do
     it '' do
     end
@@ -36,7 +41,7 @@ describe Supa::Builder do
     end
   end
 
-  describe '#polymorphic' do
+  describe '#append' do
     it '' do
     end
   end

@@ -49,60 +49,75 @@ end
 ```
 
 ```ruby
-class ArticleRepresenter
-  include Supa::Representable
+module Supa
+  class ArticleRepresenter
+    include Supa::Representable
 
-  define do
-    namespace :jsonapi do
-      attribute :version, getter: proc { 1.1 }
-    end
-
-    namespace :data do
-      attribute :id
-      attribute :type, getter: proc { 'articles' }
-
-      namespace :attributes do
-        attribute :title
-        attribute :text
+    define do
+      namespace :jsonapi do
+        virtual :version, 1.1, modifier: :to_s
       end
 
-      namespace :relationships do
-        object :author do
-          namespace :data do
-            attribute :id
-            attribute :type, getter: proc { 'authors' }
-          end
+      namespace :meta do
+        attribute :locale, :language, exec_context: :representer
+      end
+
+      namespace :data do
+        attribute :id
+        virtual :type, 'articles'
+
+        namespace :attributes do
+          attribute :title
+          attribute :text
         end
 
-        namespace :comments do
-          collection :data, getter: proc { self.comments } do
-            attribute :id
-            attribute :type, getter: proc { 'comments' }
+        namespace :relationships do
+          object :author do
+            namespace :data do
+              attribute :id
+              virtual :type, 'authors'
+            end
           end
+
+          namespace :comments do
+            collection :data, :comments do
+              attribute :id
+              virtual :type, 'comments'
+            end
+          end
+        end
+      end
+
+      collection :included, :author do
+        attribute :id
+        virtual :type, 'authors'
+
+        namespace :attributes do
+          attribute :first_name
+          attribute :last_name
+        end
+      end
+
+      append :included, :comments do
+        attribute :id
+        virtual :type, 'comments'
+
+        namespace :attributes do
+          attribute :text
         end
       end
     end
 
-    polymorphic :included, getter: proc { [self.author] } do
-      attribute :id
-      attribute :type, getter: proc { 'authors' }
-
-      namespace :attributes do
-        attribute :first_name
-        attribute :last_name
-      end
+    def to_s(value)
+      value.to_s
     end
 
-    polymorphic :included, getter: proc { self.comments } do
-      attribute :id
-      attribute :type, getter: proc { 'comments' }
-
-      namespace :attributes do
-        attribute :text
-      end
+    def language
+      'en'
     end
   end
 end
+
 ```
 
 ```ruby
@@ -112,7 +127,10 @@ ArticleRepresenter.new(Article.new).to_json
 ```json
 {
   "jsonapi": {
-    "version": 1.1
+    "version": "1.1"
+  },
+  "meta": {
+    "locale": "en"
   },
   "data": {
     "id": "7aa15512-1f9d-4a86-98ad-4bb0aae487a2",
@@ -171,13 +189,15 @@ ArticleRepresenter.new(Article.new).to_json
 
 ### `attribute`
 
+### `virtual`
+
 ### `namespace`
 
 ### `object`
 
 ### `collection`
 
-### `polymorphic`
+### `append`
 
 ## Development
 

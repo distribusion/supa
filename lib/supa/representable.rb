@@ -11,7 +11,7 @@ module Supa
       end
 
       def to_hash
-        Supa::Builder.new(context: object, tree: {}).tap do |builder|
+        Supa::Builder.new(representable: self, context: object, tree: {}).tap do |builder|
           builder.instance_exec(&self.class.definition)
         end.to_hash
       end
@@ -21,6 +21,7 @@ module Supa
       end
 
       private
+
       attr_reader :object
     end
 

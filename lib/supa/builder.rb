@@ -1,26 +1,30 @@
 require 'supa/commands/attribute'
+require 'supa/commands/virtual'
 require 'supa/commands/object'
 require 'supa/commands/namespace'
 require 'supa/commands/collection'
-require 'supa/commands/polymorphic'
+require 'supa/commands/append'
 
 module Supa
   class Builder
-    COMMANDS = %w(attribute object namespace collection polymorphic).freeze
+    COMMANDS = %w(attribute virtual object namespace collection append).freeze
 
     COMMANDS.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
 
-      define_method command do |name, options = {}, &block|
-        klass.new(context: context,
+      define_method command do |name, getter = nil, options = {}, &block|
+        klass.new(representable: representable,
+                  context: context,
                   tree: tree,
                   name: name,
+                  getter: getter,
                   options: options,
                   &block).represent
       end
     end
 
-    def initialize(context:, tree:)
+    def initialize(representable:, context:, tree:)
+      @representable = representable
       @context = context
       @tree = tree
     end
@@ -34,6 +38,6 @@ module Supa
     end
 
     private
-    attr_reader :context, :tree
+    attr_reader :representable, :context, :tree
   end
 end

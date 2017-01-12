@@ -4,12 +4,16 @@ module Supa
 
     define do
       namespace :jsonapi do
-        attribute :version, getter: proc { 1.1 }
+        virtual :version, 1.1, modifier: :to_s
+      end
+
+      namespace :meta do
+        attribute :locale, :language, exec_context: :representer
       end
 
       namespace :data do
         attribute :id
-        attribute :type, getter: proc { 'articles' }
+        virtual :type, 'articles'
 
         namespace :attributes do
           attribute :title
@@ -20,22 +24,22 @@ module Supa
           object :author do
             namespace :data do
               attribute :id
-              attribute :type, getter: proc { 'authors' }
+              virtual :type, 'authors'
             end
           end
 
           namespace :comments do
-            collection :data, getter: proc { self.comments } do
+            collection :data, :comments do
               attribute :id
-              attribute :type, getter: proc { 'comments' }
+              virtual :type, 'comments'
             end
           end
         end
       end
 
-      polymorphic :included, getter: proc { [self.author] } do
+      collection :included, :author do
         attribute :id
-        attribute :type, getter: proc { 'authors' }
+        virtual :type, 'authors'
 
         namespace :attributes do
           attribute :first_name
@@ -43,14 +47,22 @@ module Supa
         end
       end
 
-      polymorphic :included, getter: proc { self.comments } do
+      append :included, :comments do
         attribute :id
-        attribute :type, getter: proc { 'comments' }
+        virtual :type, 'comments'
 
         namespace :attributes do
           attribute :text
         end
       end
+    end
+
+    def to_s(value)
+      value.to_s
+    end
+
+    def language
+      'en'
     end
   end
 end

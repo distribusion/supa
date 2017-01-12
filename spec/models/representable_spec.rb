@@ -9,7 +9,8 @@ describe Supa::Representable do
   describe '.define' do
     let(:represented) do
       {
-        jsonapi: { version: 1.1 },
+        jsonapi: { version: '1.1' },
+        meta: { locale: 'en' },
         data: {
           id: article.id,
           type: 'articles',

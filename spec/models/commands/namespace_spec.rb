@@ -1,17 +1,42 @@
 require 'spec_helper'
 
 describe Supa::Commands::Namespace do
-  describe '#initialize' do
+  describe '#apply_modifier' do
     it '' do
     end
   end
 
-  describe '#represent' do
+  describe '#modifier' do
     it '' do
     end
   end
 
-  describe '#with_getter?' do
+  describe '#with_modifier?' do
+    it '' do
+    end
+  end
+
+  describe '#static_value' do
+    it '' do
+    end
+  end
+
+  describe '#dynamic_value' do
+    it '' do
+    end
+  end
+
+  describe '#exec_on_object?' do
+    it '' do
+    end
+  end
+
+  describe '#value_from_object' do
+    it '' do
+    end
+  end
+
+  describe '#value_from_representer' do
     it '' do
     end
   end
