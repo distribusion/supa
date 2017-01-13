@@ -12,12 +12,11 @@ module Supa
     COMMANDS.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
 
-      define_method command do |name, getter = nil, options = {}, &block|
+      define_method command do |name, options = {}, &block|
         klass.new(representer: representer,
                   context: context,
                   tree: tree,
                   name: name,
-                  getter: getter,
                   options: options,
                   &block).represent
       end

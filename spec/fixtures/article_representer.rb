@@ -4,16 +4,17 @@ module Supa
 
     define do
       namespace :jsonapi do
-        virtual :version, 1.1, modifier: :to_s
+        virtual :version, getter: 1.1, modifier: :to_s
       end
 
       namespace :meta do
-        attribute :locale, :language, exec_context: :representer
+        attribute :locale, getter: :language, exec_context: :representer
+        attribute :date, exec_context: :representer
       end
 
       namespace :data do
         attribute :id
-        virtual :type, 'articles'
+        virtual :type, getter: 'articles'
 
         namespace :attributes do
           attribute :title
@@ -24,22 +25,22 @@ module Supa
           object :author do
             namespace :data do
               attribute :id
-              virtual :type, 'authors'
+              virtual :type, getter: 'authors'
             end
           end
 
           namespace :comments do
-            collection :data, :comments do
+            collection :data, getter: :comments do
               attribute :id
-              virtual :type, 'comments'
+              virtual :type, getter: 'comments'
             end
           end
         end
       end
 
-      collection :included, :author do
+      collection :included, getter: :author do
         attribute :id
-        virtual :type, 'authors'
+        virtual :type, getter: 'authors'
 
         namespace :attributes do
           attribute :first_name
@@ -47,9 +48,9 @@ module Supa
         end
       end
 
-      append :included, :comments do
+      append :included, getter: :comments do
         attribute :id
-        virtual :type, 'comments'
+        virtual :type, getter: 'comments'
 
         namespace :attributes do
           attribute :text
@@ -63,6 +64,10 @@ module Supa
 
     def language
       'en'
+    end
+
+    def date
+      Date.today.iso8601
     end
   end
 end

@@ -1,11 +1,10 @@
 module Supa
   class Command
-    def initialize(representer:, context:, tree:, name:, getter:, options: {}, &block)
+    def initialize(representer:, context:, tree:, name:, options: {}, &block)
       @representer = representer
       @context = context
       @tree = tree
       @name = name
-      @getter = getter
       @options = options
       @block = block
     end
@@ -58,7 +57,7 @@ module Supa
     end
 
     def getter
-      @getter || @name
+      options[:getter] || @name
     end
   end
 end
