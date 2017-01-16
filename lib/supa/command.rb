@@ -57,7 +57,7 @@ module Supa
     end
 
     def getter
-      options[:getter] || @name
+      options[:getter] || name
     end
   end
 end
