@@ -11,5 +11,3 @@ module Supa
     end
   end
 end
-
-

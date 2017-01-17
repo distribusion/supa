@@ -14,6 +14,7 @@ module Supa
     end
 
     private
+
     attr_reader :representer, :context, :tree, :name, :options, :block
 
     def apply_modifier(value)
@@ -25,7 +26,7 @@ module Supa
     end
 
     def with_modifier?
-      !!options[:modifier]
+      !options[:modifier].nil?
     end
 
     def static_value
@@ -36,9 +37,9 @@ module Supa
 
     def dynamic_value
       value = if exec_on_object?
-        value_from_object
-      else
-        value_from_representer
+                value_from_object
+              else
+                value_from_representer
       end
 
       apply_modifier(value)
@@ -58,6 +59,14 @@ module Supa
 
     def getter
       options[:getter] || name
+    end
+
+    def render_collection?
+      Array(dynamic_value).any? || @options[:render_when_empty]
+    end
+
+    def render_element?
+      context || @options[:render_when_empty]
     end
   end
 end

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Supa::Commands::Attribute do
-  let(:object) { double('DummyArticle', name: 'Zaphod') }
+  let(:object) { double('DummyArticle', name: 'Zaphod', surname: 'Surname', name_as_sym: :zaphod) }
   let(:representer) { Supa::ArticleRepresenter.new(object) }
   let(:render_result) { attribute.represent }
 
   subject(:attribute) do
-    described_class.new(object, name: :name, tree: {}, representer: representer, options: options)
+    described_class.new(representer: representer, context: object, tree: {}, name: :name, options: options)
   end
 
   describe '#initialize' do
@@ -21,40 +21,25 @@ describe Supa::Commands::Attribute do
   end
 
   describe '#getter' do
-    context 'as proc' do
-      let(:options) { {getter: proc { self.name }} }
+    context 'when it renders surname as name' do
+      let(:options) { {getter: :surname} }
 
-      it { expect(render_result).to eq('Zaphod') }
+      it { expect(render_result).to eq('Surname') }
     end
 
-    context 'as string literal' do
-      let(:options) { {getter: 'Bluejay'} }
+    context 'when render attribute with modifier' do
+      let(:options) { {getter: :name_as_sym, modifier: :to_s} }
 
-      it { expect(render_result).to eq('Bluejay') }
+      it { expect(render_result).to eq('zaphod') }
     end
 
-    context 'as numeric literal' do
-      let(:options) { {getter: 1.75} }
+    context 'when pass an execution context' do
+      let(:options) { {getter: :mothod_name, exec_context: :representer} }
 
-      it { expect(render_result).to eq(1.75) }
-    end
-
-    context 'as a Time' do
-      let(:options) { {getter: Time.gm(2017, 1, 5, 12, 0)} }
-
-      it { expect(render_result).to eq(Time.gm(2017, 1, 5, 12, 0)) }
-    end
-
-    context 'as a Date' do
-      let(:options) { {getter: Date.new(2017, 1, 5)} }
-
-      it { expect(render_result).to eq(Date.new(2017, 1, 5)) }
-    end
-
-    context 'as Trueclass' do
-      let(:options) { {getter: true} }
-
-      it { expect(render_result).to eq(true) }
+      it do
+        pending('TBD')
+        raise
+      end
     end
   end
 end
