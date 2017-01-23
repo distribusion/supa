@@ -4,7 +4,7 @@ module Supa
   module Commands
     class Object < Supa::Command
       def represent
-        tree[name] = {} if render_element?
+        tree[name] = {} if render?
 
         if context
           Supa::Builder.new(representer: representer, context: processed_value, tree: tree[name])

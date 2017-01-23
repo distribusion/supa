@@ -58,15 +58,10 @@ module Supa
       options[:getter] || name
     end
 
-    def render_collection?
+    def render?
       Array(value).any? || @options[:render_empty]
     end
 
-    def render_element?
-      context || @options[:render_empty]
-    end
-
-    # Should be defined in the commands either as `dynamic_value` or `static_value`
     def value
       raise NotImplementedError
     end

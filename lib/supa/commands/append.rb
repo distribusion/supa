@@ -6,7 +6,7 @@ module Supa
       def represent
         return unless value
 
-        tree[name] ||= [] if render_collection?
+        tree[name] ||= [] if render?
 
         Array(processed_value).each do |element|
           tree[name] << {}
