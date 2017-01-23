@@ -29,20 +29,12 @@ module Supa
       !options[:modifier].nil?
     end
 
-    def static_value
-      getter
-    end
-
     def dynamic_value
-      if exec_on_object?
-        value_from_object
-      else
-        value_from_representer
-      end
+      exec_on_representer? ? value_from_representer : value_from_object
     end
 
-    def exec_on_object?
-      options[:exec_context] != :representer
+    def exec_on_representer?
+      options[:exec_context] == :representer
     end
 
     def value_from_object

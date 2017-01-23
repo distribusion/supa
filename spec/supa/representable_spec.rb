@@ -12,7 +12,7 @@ describe Supa::Representable do
         jsonapi: {version: '1.1'},
         meta: {
           locale: 'en',
-          date: Date.today.iso8601.to_s
+          date: Date.today.iso8601
         },
         data: {
           id: article.id,
@@ -81,7 +81,7 @@ describe Supa::Representable do
           jsonapi: {version: '1.1'},
           meta: {
             locale: 'en',
-            date: Date.today.iso8601.to_s
+            date: Date.today.iso8601
           },
           data: {}
         }
@@ -101,7 +101,7 @@ describe Supa::Representable do
           jsonapi: {version: '1.1'},
           meta: {
             locale: 'en',
-            date: Date.today.iso8601.to_s
+            date: Date.today.iso8601
           },
           data: []
         }

@@ -10,7 +10,7 @@ module Supa
       private
 
       def value
-        static_value
+        getter
       end
     end
   end
