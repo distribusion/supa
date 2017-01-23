@@ -7,9 +7,15 @@ module Supa
         tree[name] = {} if render_element?
 
         if context
-          Supa::Builder.new(representer: representer, context: dynamic_value, tree: tree[name])
+          Supa::Builder.new(representer: representer, context: processed_value, tree: tree[name])
                        .instance_exec(&block)
         end
+      end
+
+      private
+
+      def value
+        dynamic_value
       end
     end
   end

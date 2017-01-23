@@ -30,19 +30,15 @@ module Supa
     end
 
     def static_value
-      value = getter
-
-      apply_modifier(value)
+      getter
     end
 
     def dynamic_value
-      value = if exec_on_object?
-                value_from_object
-              else
-                value_from_representer
+      if exec_on_object?
+        value_from_object
+      else
+        value_from_representer
       end
-
-      apply_modifier(value)
     end
 
     def exec_on_object?
@@ -50,7 +46,8 @@ module Supa
     end
 
     def value_from_object
-      context.is_a?(Hash) ? context[getter] : context.send(getter)
+      return context[getter] if context.is_a?(Hash)
+      return context.send(getter) if context.respond_to?(getter)
     end
 
     def value_from_representer
@@ -62,11 +59,20 @@ module Supa
     end
 
     def render_collection?
-      Array(dynamic_value).any? || @options[:render_when_empty]
+      Array(value).any? || @options[:render_empty]
     end
 
     def render_element?
-      context || @options[:render_when_empty]
+      context || @options[:render_empty]
+    end
+
+    # Should be defined in the commands either as `dynamic_value` or `static_value`
+    def value
+      raise NotImplementedError
+    end
+
+    def processed_value
+      apply_modifier(value)
     end
   end
 end

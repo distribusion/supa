@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Supa::Commands::Attribute do
   let(:object) { double('DummyArticle', name: 'Zaphod', surname: 'Surname', name_as_sym: :zaphod) }
   let(:representer) { Supa::ArticleRepresenter.new(object) }
-  let(:render_result) { attribute.represent }
+  subject(:render_result) { attribute.represent }
 
-  subject(:attribute) do
+  let(:attribute) do
     described_class.new(representer: representer, context: object, tree: {}, name: :name, options: options)
   end
 

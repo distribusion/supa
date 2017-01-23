@@ -4,7 +4,13 @@ module Supa
   module Commands
     class Virtual < Supa::Command
       def represent
-        tree[name] = static_value
+        tree[name] = processed_value
+      end
+
+      private
+
+      def value
+        static_value
       end
     end
   end

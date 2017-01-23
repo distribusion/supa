@@ -18,7 +18,7 @@ module Supa
                   tree: tree,
                   name: name,
                   options: options,
-          &block).represent
+                  &block).represent
       end
     end
 

@@ -12,7 +12,7 @@ module Supa
         attribute :date, exec_context: :representer
       end
 
-      object :data, getter: :itself, render_when_empty: true do
+      object :data, getter: :itself, render_empty: true do
         attribute :id
         virtual :type, getter: 'articles'
 

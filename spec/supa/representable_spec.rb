@@ -74,7 +74,7 @@ describe Supa::Representable do
       end
     end
 
-    context 'when object is nill' do
+    context 'when object is nil' do
       let(:article) { nil }
       let(:represented) do
         {
