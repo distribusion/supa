@@ -4,7 +4,7 @@ module Supa
       def represent
         @tree[@name] = {} if render?
 
-        if @context
+        if @subject
           Supa::Builder.new(processed_value, representer: @representer, tree: @tree[@name])
                        .instance_exec(&@block)
         end

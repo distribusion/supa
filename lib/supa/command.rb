@@ -1,7 +1,7 @@
 module Supa
   class Command
-    def initialize(context, representer:, tree:, name:, options: {}, &block)
-      @context = context
+    def initialize(subject, representer:, tree:, name:, options: {}, &block)
+      @subject = subject
       @representer = representer
       @tree = tree
       @name = name
@@ -36,8 +36,8 @@ module Supa
     end
 
     def value_from_object
-      return @context[getter] if @context.is_a?(Hash)
-      return @context.send(getter) if @context.respond_to?(getter)
+      return @subject[getter] if @subject.is_a?(Hash)
+      return @subject.send(getter) if @subject.respond_to?(getter)
     end
 
     def value_from_representer
