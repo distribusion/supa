@@ -74,7 +74,7 @@ describe Supa::Representable do
               locale: 'en',
               date: Date.today.iso8601
             },
-            data: {}
+            data: nil
           }
         end
 

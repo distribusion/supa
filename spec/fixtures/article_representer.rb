@@ -12,7 +12,7 @@ module Supa
         attribute :date, exec_context: :representer
       end
 
-      object :data, getter: :itself, render_empty: true do
+      object :data, getter: :itself do
         attribute :id
         virtual :type, getter: 'articles'
 
@@ -38,7 +38,7 @@ module Supa
         end
       end
 
-      collection :included, getter: :author do
+      collection :included, getter: :author, empty_when_nil: true, hide_when_empty: true do
         attribute :id
         virtual :type, getter: 'authors'
 
@@ -48,7 +48,7 @@ module Supa
         end
       end
 
-      append :included, getter: :comments do
+      append :included, getter: :comments, empty_when_nil: true, hide_when_empty: true do
         attribute :id
         virtual :type, getter: 'comments'
 

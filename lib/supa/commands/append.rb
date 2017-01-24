@@ -2,9 +2,19 @@ module Supa
   module Commands
     class Append < Supa::Command
       def represent
-        return unless value
+        if !processed_value && !hide_when_empty?
+          return @tree[@name] = nil
+        end
 
-        @tree[@name] ||= [] if render?
+        # if hide_when_nil?
+        #   return
+        # end
+
+        if hide_when_empty?
+          return
+        end
+
+        @tree[@name] ||= []
 
         Array(processed_value).each do |element|
           @tree[@name] << {}
@@ -17,6 +27,11 @@ module Supa
 
       def value
         dynamic_value
+      end
+
+      def convert_to_empty_object(object)
+        return [] if object.nil?
+        object
       end
     end
   end

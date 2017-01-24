@@ -37,7 +37,7 @@ module Supa
 
     def value_from_object
       return @subject[getter] if @subject.is_a?(Hash)
-      @subject.send(getter)
+      return @subject.send(getter) if @subject.respond_to?(getter)
     end
 
     def value_from_representer
@@ -48,8 +48,22 @@ module Supa
       @options[:getter] || @name
     end
 
-    def render?
-      Array(value).any? || @options[:render_empty]
+    def hide_when_empty?
+      @options[:hide_when_empty] ||= false
+
+      if value.is_a?(Array)
+        convert_to_empty_object(value).any? ? false : @options[:hide_when_empty]
+      else
+        value.nil? ? @options[:hide_when_empty] : false
+      end
+    end
+
+    def convert_nil_to_object?
+      @options[:empty_when_nil] ||= false
+    end
+
+    def convert_to_empty_object(object)
+      raise NotImplementedError
     end
 
     def value
@@ -57,7 +71,11 @@ module Supa
     end
 
     def processed_value
-      apply_modifier(value)
+      if convert_nil_to_object?
+        apply_modifier(convert_to_empty_object(value))
+      else
+        apply_modifier(value)
+      end
     end
   end
 end
