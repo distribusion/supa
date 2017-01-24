@@ -191,8 +191,91 @@ ArticleRepresenter.new(Article.new).to_json
 ```
 
 ### `attribute`
+Attributes will be retrieved from correspondingly named instance methods unless a getter is defined:
+```ruby
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name
+  end
+end
+
+ExampleRepresenter.new(OpenStruct.new(name: 'Heidi')).to_hash
+
+  #=> {
+  #=>   name: 'Heidi'
+  #=> }
+```
+A getter can take several forms:
+
+### 1. Method name
+```ruby
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: :full_name
+  end
+end
+
+class Person
+  attr_accessor :full_name
+end
+
+example = Person.new
+example.full_name = 'Heidi Shepherd'
+
+ExampleRepresenter.new(example).to_hash
+
+  #=> {
+  #=>   name: 'Heidi Shepherd'
+  #=> }
+```
+The lookup order is to first check the object instance and then the representer for a matching method.
+
+###2. Hash key
+```ruby
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :name, getter: 'full_name'
+  end
+end
+
+example = {
+  'full_name' => 'Heidi Shepherd'
+}
+
+ExampleRepresenter.new(example).to_hash
+
+  #=> {
+  #=>   name: 'Heidi Shepherd'
+  #=> }
+
+```
 
 ### `virtual`
+
+Virtual is an attribute that doesn't exist in representing object and defind as `string`.
+```ruby
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attribute :version, getter: 1.0
+    attribute :type, getter: 'documentation'
+  end
+end
+
+ExampleRepresenter.new({}).to_hash
+
+{
+  version: 1.0,
+  type: 'documentation',
+}
+```
 
 ### `namespace`
 
