@@ -11,7 +11,7 @@ module Supa
       end
 
       def to_hash
-        Supa::Builder.new(representer: self, context: representee, tree: {}).tap do |builder|
+        Supa::Builder.new(representee, representer: self, tree: {}).tap do |builder|
           builder.instance_exec(&self.class.definition)
         end.to_hash
       end

@@ -11,7 +11,7 @@ module Supa
         Array(processed_value).each do |element|
           tree[name] << {}
 
-          Supa::Builder.new(representer: representer, context: element, tree: tree[name][-1]).instance_exec(&block)
+          Supa::Builder.new(element, representer: representer, tree: tree[name][-1]).instance_exec(&block)
         end
       end
 

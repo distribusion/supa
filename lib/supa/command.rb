@@ -1,8 +1,8 @@
 module Supa
   class Command
-    def initialize(representer:, context:, tree:, name:, options: {}, &block)
-      @representer = representer
+    def initialize(context, representer:, tree:, name:, options: {}, &block)
       @context = context
+      @representer = representer
       @tree = tree
       @name = name
       @options = options

@@ -6,7 +6,7 @@ describe Supa::Commands::Attribute do
   subject(:render_result) { attribute.represent }
 
   let(:attribute) do
-    described_class.new(representer: representer, context: object, tree: {}, name: :name, options: options)
+    described_class.new(object, representer: representer, tree: {}, name: :name, options: options)
   end
 
   describe '#initialize' do

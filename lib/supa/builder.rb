@@ -1,10 +1,3 @@
-require 'supa/commands/attribute'
-require 'supa/commands/virtual'
-require 'supa/commands/object'
-require 'supa/commands/namespace'
-require 'supa/commands/collection'
-require 'supa/commands/append'
-
 module Supa
   class Builder
     COMMANDS = %w(attribute virtual object namespace collection append).freeze
@@ -13,8 +6,8 @@ module Supa
       klass = Supa::Commands.const_get(command.capitalize)
 
       define_method command do |name, options = {}, &block|
-        klass.new(representer: representer,
-                  context: context,
+        klass.new(context,
+                  representer: representer,
                   tree: tree,
                   name: name,
                   options: options,
@@ -22,9 +15,9 @@ module Supa
       end
     end
 
-    def initialize(representer:, context:, tree:)
-      @representer = representer
+    def initialize(context, representer:, tree:)
       @context = context
+      @representer = representer
       @tree = tree
     end
 

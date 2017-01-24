@@ -7,7 +7,7 @@ module Supa
         tree[name] = {} if render?
 
         if context
-          Supa::Builder.new(representer: representer, context: processed_value, tree: tree[name])
+          Supa::Builder.new(processed_value, representer: representer, tree: tree[name])
                        .instance_exec(&block)
         end
       end
