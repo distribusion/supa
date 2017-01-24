@@ -1,5 +1,3 @@
-require 'supa/command'
-
 module Supa
   module Commands
     class Append < Supa::Command

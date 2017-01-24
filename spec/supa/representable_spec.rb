@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Supa::Representable do
-  let(:article) { Supa::Fixtures.article }
   let(:author) { article.author }
   let(:comments) { article.comments }
-  let(:representer) { Supa::ArticleRepresenter.new(article) }
+  subject(:representer) { Supa::ArticleRepresenter.new(article) }
 
   describe '.define' do
+    let(:article) { Supa::Fixtures.article }
     let(:represented) do
       {
         jsonapi: {version: '1.1'},
@@ -60,59 +60,47 @@ describe Supa::Representable do
       }
     end
 
-    subject { representer }
-
     describe '#to_hash' do
-      it 'serializes to hash' do
-        expect(subject.to_hash).to eq(represented)
+      context 'when object exists' do
+        it { expect(representer.to_hash).to eq(represented) }
+      end
+
+      context 'when object is nil' do
+        let(:article) { nil }
+        let(:represented) do
+          {
+            jsonapi: {version: '1.1'},
+            meta: {
+              locale: 'en',
+              date: Date.today.iso8601
+            },
+            data: {}
+          }
+        end
+
+        it { expect(representer.to_hash).to eq(represented) }
+      end
+
+      context 'when object is empty array' do
+        let(:articles) { [] }
+        let(:representer) { Supa::ArticlesRepresenter.new(articles) }
+        let(:represented) do
+          {
+            jsonapi: {version: '1.1'},
+            meta: {
+              locale: 'en',
+              date: Date.today.iso8601
+            },
+            data: []
+          }
+        end
+
+        it { expect(representer.to_hash).to eq(represented) }
       end
     end
 
     describe '#to_json' do
-      it 'serializes to hash' do
-        expect(subject.to_json).to eq(represented.to_json)
-      end
-    end
-
-    context 'when object is nil' do
-      let(:article) { nil }
-      let(:represented) do
-        {
-          jsonapi: {version: '1.1'},
-          meta: {
-            locale: 'en',
-            date: Date.today.iso8601
-          },
-          data: {}
-        }
-      end
-
-      describe '#to_hash' do
-        it 'serializes to hash' do
-          expect(representer.to_hash).to eq(represented)
-        end
-      end
-    end
-
-    context 'when object is empty array' do
-      let(:articles) { [] }
-      let(:represented) do
-        {
-          jsonapi: {version: '1.1'},
-          meta: {
-            locale: 'en',
-            date: Date.today.iso8601
-          },
-          data: []
-        }
-      end
-      subject(:representer) { Supa::ArticlesRepresenter.new(articles) }
-
-      describe '#to_hash' do
-        it 'serializes to hash' do
-          expect(representer.to_hash).to eq(represented)
-        end
-      end
+      it { expect(representer.to_json).to eq(represented.to_json) }
     end
   end
 end
