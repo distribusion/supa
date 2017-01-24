@@ -4,7 +4,9 @@ module Supa
   module Commands
     class Append < Supa::Command
       def represent
-        tree[name] ||= []
+        return unless context
+
+        tree[name] ||= [] if render_collection?
 
         Array(dynamic_value).each do |element|
           tree[name] << {}

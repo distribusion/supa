@@ -11,4 +11,4 @@ Rake::TestTask.new(:bench) do |t|
   t.test_files = FileList['spec/benchmarks/**/*_bench.rb']
 end
 
-task :default => :test
+task default: :test

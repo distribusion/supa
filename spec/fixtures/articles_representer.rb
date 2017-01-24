@@ -1,5 +1,5 @@
 module Supa
-  class ArticleRepresenter
+  class ArticlesRepresenter
     include Supa::Representable
 
     define do
@@ -12,7 +12,7 @@ module Supa
         attribute :date, exec_context: :representer
       end
 
-      object :data, getter: :itself, render_when_empty: true do
+      collection :data, getter: :itself, render_when_empty: true do
         attribute :id
         virtual :type, getter: 'articles'
 
@@ -38,7 +38,7 @@ module Supa
         end
       end
 
-      collection :included, getter: :author do
+      collection :included, getter: :authors, exec_context: :representer do
         attribute :id
         virtual :type, getter: 'authors'
 
@@ -48,7 +48,7 @@ module Supa
         end
       end
 
-      append :included, getter: :comments do
+      append :included, getter: :comments, exec_context: :representer do
         attribute :id
         virtual :type, getter: 'comments'
 
@@ -56,6 +56,14 @@ module Supa
           attribute :text
         end
       end
+    end
+
+    def authors
+      representee.flat_map(&:authors).uniq
+    end
+
+    def comments
+      representee.flat_map(&:comments).uniq
     end
 
     def to_s(value)

@@ -9,26 +9,26 @@ describe Supa::Representable do
   describe '.define' do
     let(:represented) do
       {
-        jsonapi: { version: '1.1' },
+        jsonapi: {version: '1.1'},
         meta: {
           locale: 'en',
-          date: "#{Date.today.iso8601}"
+          date: Date.today.iso8601.to_s
         },
         data: {
           id: article.id,
           type: 'articles',
           attributes: {
             title: article.title,
-            text: article.text,
+            text: article.text
           },
           relationships: {
             author: {
-              data: { id: author.id, type: 'authors' }
+              data: {id: author.id, type: 'authors'}
             },
             comments: {
               data: [
-                { id: comments[0].id, type: 'comments' },
-                { id: comments[1].id, type: 'comments' }
+                {id: comments[0].id, type: 'comments'},
+                {id: comments[1].id, type: 'comments'}
               ]
             }
           }
@@ -64,13 +64,54 @@ describe Supa::Representable do
 
     describe '#to_hash' do
       it 'serializes to hash' do
-        subject.to_hash.must_equal(represented)
+        expect(subject.to_hash).to eq(represented)
       end
     end
 
     describe '#to_json' do
       it 'serializes to hash' do
-        subject.to_json.must_equal(represented.to_json)
+        expect(subject.to_json).to eq(represented.to_json)
+      end
+    end
+
+    context 'when object is nill' do
+      let(:article) { nil }
+      let(:represented) do
+        {
+          jsonapi: {version: '1.1'},
+          meta: {
+            locale: 'en',
+            date: Date.today.iso8601.to_s
+          },
+          data: {}
+        }
+      end
+
+      describe '#to_hash' do
+        it 'serializes to hash' do
+          expect(representer.to_hash).to eq(represented)
+        end
+      end
+    end
+
+    context 'when object is empty array' do
+      let(:articles) { [] }
+      let(:represented) do
+        {
+          jsonapi: {version: '1.1'},
+          meta: {
+            locale: 'en',
+            date: Date.today.iso8601.to_s
+          },
+          data: []
+        }
+      end
+      subject(:representer) { Supa::ArticlesRepresenter.new(articles) }
+
+      describe '#to_hash' do
+        it 'serializes to hash' do
+          expect(representer.to_hash).to eq(represented)
+        end
       end
     end
   end
