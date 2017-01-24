@@ -9,11 +9,6 @@ describe Supa::Commands::Attribute do
     described_class.new(object, representer: representer, tree: {}, name: :name, options: options)
   end
 
-  describe '#initialize' do
-    it '' do
-    end
-  end
-
   describe '#represent' do
     let(:options) { {} }
 
@@ -31,15 +26,6 @@ describe Supa::Commands::Attribute do
       let(:options) { {getter: :name_as_sym, modifier: :to_s} }
 
       it { expect(render_result).to eq('zaphod') }
-    end
-
-    context 'when pass an execution context' do
-      let(:options) { {getter: :mothod_name, exec_context: :representer} }
-
-      it do
-        pending('TBD')
-        raise
-      end
     end
   end
 end
