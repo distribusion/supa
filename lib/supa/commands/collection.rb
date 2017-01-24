@@ -18,6 +18,10 @@ module Supa
       def value
         dynamic_value
       end
+
+      def render?
+        processed_value.any? || @options[:render_empty]
+      end
     end
   end
 end
