@@ -2,7 +2,7 @@ module Supa
   module Commands
     class Virtual < Supa::Command
       def represent
-        tree[name] = processed_value
+        @tree[@name] = processed_value
       end
 
       private

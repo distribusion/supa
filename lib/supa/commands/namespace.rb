@@ -2,9 +2,9 @@ module Supa
   module Commands
     class Namespace < Supa::Command
       def represent
-        tree[name] = {}
+        @tree[@name] = {}
 
-        Supa::Builder.new(context, representer: representer, tree: tree[name]).instance_exec(&block)
+        Supa::Builder.new(@context, representer: @representer, tree: @tree[@name]).instance_exec(&@block)
       end
     end
   end

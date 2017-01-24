@@ -15,18 +15,16 @@ module Supa
 
     private
 
-    attr_reader :representer, :context, :tree, :name, :options, :block
-
     def apply_modifier(value)
-      with_modifier? ? representer.send(modifier, value) : value
+      with_modifier? ? @representer.send(modifier, value) : value
     end
 
     def modifier
-      options[:modifier]
+      @options[:modifier]
     end
 
     def with_modifier?
-      !options[:modifier].nil?
+      !@options[:modifier].nil?
     end
 
     def dynamic_value
@@ -34,20 +32,20 @@ module Supa
     end
 
     def exec_on_representer?
-      options[:exec_context] == :representer
+      @options[:exec_context] == :representer
     end
 
     def value_from_object
-      return context[getter] if context.is_a?(Hash)
-      return context.send(getter) if context.respond_to?(getter)
+      return @context[getter] if @context.is_a?(Hash)
+      return @context.send(getter) if @context.respond_to?(getter)
     end
 
     def value_from_representer
-      representer.send(getter)
+      @representer.send(getter)
     end
 
     def getter
-      options[:getter] || name
+      @options[:getter] || @name
     end
 
     def render?

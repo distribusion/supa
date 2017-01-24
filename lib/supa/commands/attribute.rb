@@ -2,7 +2,7 @@ module Supa
   module Commands
     class Attribute < Supa::Command
       def represent
-        tree[name] = processed_value if render?
+        @tree[@name] = processed_value if render?
       end
 
       private
