@@ -20,7 +20,6 @@ module Supa
       modifier ? @representer.send(modifier, flagged_value(raw_value)) : flagged_value(raw_value)
     end
 
-    # --------------------------------------------------------------------------
     def value_from_subject
       return @subject[getter] if @subject.is_a?(Hash)
       @subject.send(getter) if @subject

@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'supa'
   spec.version       = Supa::VERSION
   spec.platform      = Gem::Platform::RUBY
-  spec.authors       = ['dasnotme', 'Jan Rietema', 'Jakub Gorzelak', 'SamyRai']
+  spec.authors       = ['dasnotme', 'Jan Rietema', 'Jakub Gorzelak', 'Damir Mukimov']
   spec.email         = %w(
     info@distribusion.com
     jan.rietema@distribusion.com
