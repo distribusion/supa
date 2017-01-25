@@ -15,11 +15,13 @@ module Supa
 
     private
 
-    def dynamic_value
-      exec_on_representer? ? value_from_representer : value_from_object
+    def value
+      raw_value = exec_on_representer? ? value_from_representer : value_from_subject
+      with_modifier? ? @representer.send(modifier, flagged_value(raw_value)) : flagged_value(raw_value)
     end
 
-    def value_from_object
+    # --------------------------------------------------------------------------
+    def value_from_subject
       return @subject[getter] if @subject.is_a?(Hash)
       @subject.send(getter) if @subject.respond_to?(getter)
     end
@@ -27,12 +29,6 @@ module Supa
     def value_from_representer
       @representer.send(getter)
     end
-
-    def processed_value
-      with_modifier? ? @representer.send(modifier, value) : value
-    end
-
-    # --------------------------------------------------------------------------
 
     def modifier
       @options[:modifier]
@@ -63,10 +59,6 @@ module Supa
     end
 
     def convert_to_empty_object(_object)
-      raise NotImplementedError
-    end
-
-    def value
       raise NotImplementedError
     end
   end

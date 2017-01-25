@@ -2,12 +2,12 @@ module Supa
   module Commands
     class Append < Supa::Command
       def represent
-        return @tree[@name] = nil unless processed_value || hide?
+        return @tree[@name] = nil unless value || hide?
         return if hide?
 
         @tree[@name] ||= []
 
-        Array(processed_value).each do |element|
+        Array(value).each do |element|
           @tree[@name] << {}
 
           Supa::Builder.new(element, representer: @representer, tree: @tree[@name][-1]).instance_exec(&@block)
@@ -16,9 +16,9 @@ module Supa
 
       private
 
-      def value
-        return [] if !dynamic_value && empty_when_nil?
-        dynamic_value
+      def flagged_value(raw_value)
+        return [] if !raw_value && empty_when_nil?
+        raw_value
       end
 
       def hide?

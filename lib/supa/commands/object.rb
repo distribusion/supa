@@ -2,13 +2,13 @@ module Supa
   module Commands
     class Object < Supa::Command
       def represent
-        return @tree[@name] = nil unless processed_value || hide?
+        return @tree[@name] = nil unless value || hide?
         return if hide?
 
         @tree[@name] = {}
 
         Supa::Builder.new(
-          processed_value,
+          value,
           representer: @representer,
           tree: @tree[@name]
         ).instance_exec(&@block)
@@ -16,9 +16,9 @@ module Supa
 
       private
 
-      def value
-        return {} if !dynamic_value && empty_when_nil?
-        dynamic_value
+      def flagged_value(raw_value)
+        return {} if !raw_value && empty_when_nil?
+        raw_value
       end
 
       def hide?

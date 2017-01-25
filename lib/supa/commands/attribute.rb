@@ -2,13 +2,13 @@ module Supa
   module Commands
     class Attribute < Supa::Command
       def represent
-        @tree[@name] = processed_value
+        @tree[@name] = value
       end
 
       private
 
-      def value
-        dynamic_value
+      def flagged_value(non_flagged_value)
+        non_flagged_value
       end
     end
   end

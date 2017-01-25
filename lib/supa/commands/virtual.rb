@@ -2,13 +2,13 @@ module Supa
   module Commands
     class Virtual < Supa::Command
       def represent
-        @tree[@name] = processed_value
+        @tree[@name] = value
       end
 
       private
 
       def value
-        getter
+        with_modifier? ? @representer.send(modifier, getter) : getter
       end
     end
   end
