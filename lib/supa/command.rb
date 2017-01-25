@@ -17,7 +17,7 @@ module Supa
 
     def value
       raw_value = exec_on_representer? ? value_from_representer : value_from_subject
-      with_modifier? ? @representer.send(modifier, flagged_value(raw_value)) : flagged_value(raw_value)
+      modifier ? @representer.send(modifier, flagged_value(raw_value)) : flagged_value(raw_value)
     end
 
     # --------------------------------------------------------------------------
@@ -31,11 +31,7 @@ module Supa
     end
 
     def modifier
-      @options[:modifier]
-    end
-
-    def with_modifier?
-      !@options[:modifier].nil?
+      @options.fetch(:modifier, false)
     end
 
     def exec_on_representer?

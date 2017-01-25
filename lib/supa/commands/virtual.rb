@@ -8,7 +8,7 @@ module Supa
       private
 
       def value
-        with_modifier? ? @representer.send(modifier, getter) : getter
+        modifier ? @representer.send(modifier, getter) : getter
       end
     end
   end
