@@ -53,19 +53,21 @@ module Supa
     end
 
     def hide_when_empty?
-      @options[:hide_when_empty] ||= false
+      @options.fetch(:hide_when_empty, false)
+    end
 
+    def _hide_when_empty?
       if value.is_a?(Array)
-        not_nil_value.any? ? false : @options[:hide_when_empty]
+        not_nil_value.any? ? false : hide_when_empty?
       elsif value.is_a?(Hash)
-        not_nil_value.empty? ? @options[:hide_when_empty] : false
+        not_nil_value.empty? ? hide_when_empty? : false
       else
-        value.nil? ? @options[:hide_when_empty] : false
+        value.nil? ? hide_when_empty? : false
       end
     end
 
-    def convert_nil_to_object?
-      @options[:empty_when_nil] ||= false
+    def empty_when_nil?
+      @options.fetch(:empty_when_nil, false)
     end
 
     def convert_to_empty_object(_object)
@@ -77,7 +79,7 @@ module Supa
     end
 
     def processed_value
-      return midified_not_nil_value if convert_nil_to_object?
+      return midified_not_nil_value if empty_when_nil?
       midified_value
     end
   end
