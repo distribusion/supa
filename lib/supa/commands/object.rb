@@ -20,9 +20,9 @@ module Supa
         dynamic_value
       end
 
-      def convert_to_empty_object(object)
-        return '' if object.nil?
-        object
+      def not_nil_value
+        return '' if value.nil?
+        value
       end
     end
   end

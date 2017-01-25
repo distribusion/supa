@@ -15,8 +15,12 @@ module Supa
 
     private
 
-    def apply_modifier(value)
+    def midified_value
       with_modifier? ? @representer.send(modifier, value) : value
+    end
+
+    def midified_not_nil_value
+      with_modifier? ? @representer.send(modifier, not_nil_value) : not_nil_value
     end
 
     def modifier
@@ -52,7 +56,7 @@ module Supa
       @options[:hide_when_empty] ||= false
 
       if value.is_a?(Array)
-        convert_to_empty_object(value).any? ? false : @options[:hide_when_empty]
+        not_nil_value.any? ? false : @options[:hide_when_empty]
       else
         value.nil? ? @options[:hide_when_empty] : false
       end
@@ -72,9 +76,9 @@ module Supa
 
     def processed_value
       if convert_nil_to_object?
-        apply_modifier(convert_to_empty_object(value))
+        midified_not_nil_value
       else
-        apply_modifier(value)
+        midified_value
       end
     end
   end
