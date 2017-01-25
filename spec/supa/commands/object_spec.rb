@@ -31,7 +31,7 @@ describe Supa::Commands::Object do
     context 'when object is empty' do
       let(:object) { double(:dummy, article: {}) }
 
-      it { expect(result).to eq(article: {:name=>nil, :cover=>nil}) }
+      it { expect(result).to eq(article: {name: nil, cover: nil}) }
     end
   end
 
