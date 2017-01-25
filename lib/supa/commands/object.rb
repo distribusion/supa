@@ -2,14 +2,9 @@ module Supa
   module Commands
     class Object < Supa::Command
       def represent
+        return @tree[@name] = nil if !processed_value && !hide_when_empty?
 
-        if !processed_value && !hide_when_empty?
-          return @tree[@name] = nil
-        end
-
-        if hide_when_empty?
-          return
-        end
+        return if hide_when_empty?
 
         @tree[@name] = {}
 
@@ -26,8 +21,8 @@ module Supa
       end
 
       def convert_to_empty_object(object)
-          return '' if object.nil?
-          object
+        return '' if object.nil?
+        object
       end
     end
   end

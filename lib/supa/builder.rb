@@ -13,11 +13,11 @@ module Supa
 
       define_method command do |name, options = {}, &block|
         klass.new(@subject,
-                  representer: @representer,
-                  tree: @tree,
-                  name: name,
-                  options: options,
-                  &block).represent
+          representer: @representer,
+          tree: @tree,
+          name: name,
+          options: options,
+          &block).represent
       end
     end
 

@@ -19,13 +19,13 @@ describe Supa::Commands::Object do
     context 'when object is returned by object method' do
       let(:object) { double(:dummy, article: {name: 'Title', cover: 'black'}) }
 
-      it { expect(result).to eq({article: {name: 'Title', cover: 'black'}}) }
+      it { expect(result).to eq(article: {name: 'Title', cover: 'black'}) }
     end
 
     context 'when object is nil' do
       let(:object) { double(:dummy, article: nil) }
 
-      it { expect(result).to eq({article: nil}) }
+      it { expect(result).to eq(article: nil) }
     end
   end
 
@@ -47,7 +47,7 @@ describe Supa::Commands::Object do
     context 'when object is returned by object method' do
       let(:object) { double(:dummy, article: {name: 'Title', cover: 'black'}) }
 
-      it { expect(result).to eq({article: {name: 'Title', cover: 'black'}}) }
+      it { expect(result).to eq(article: {name: 'Title', cover: 'black'}) }
     end
 
     context 'when object is nil' do
@@ -75,13 +75,13 @@ describe Supa::Commands::Object do
     context 'when object is returned by object method' do
       let(:object) { double(:dummy, article: {name: 'Title', cover: 'black'}) }
 
-      it { expect(result).to eq({article: {name: 'Title', cover: 'black'}}) }
+      it { expect(result).to eq(article: {name: 'Title', cover: 'black'}) }
     end
 
     context 'when object is nil' do
       let(:object) { double(:dummy, article: nil) }
 
-      it { expect(result).to eq({article: {:name=>nil, :cover=>nil}}) }
+      it { expect(result).to eq(article: {name: nil, cover: nil}) }
     end
   end
 
@@ -103,7 +103,7 @@ describe Supa::Commands::Object do
     context 'when object is returned by object method' do
       let(:object) { double(:dummy, article: {name: 'Title', cover: 'black'}) }
 
-      it { expect(result).to eq({article: {name: 'Title', cover: 'black'}}) }
+      it { expect(result).to eq(article: {name: 'Title', cover: 'black'}) }
     end
 
     context 'when object is nil' do

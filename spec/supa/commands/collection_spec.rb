@@ -18,19 +18,19 @@ describe Supa::Commands::Collection do
     context 'when collection is returned by object method' do
       let(:object) { double(:dummy, articles: [{name: 'Title'}]) }
 
-      it { expect(result).to eq({articles: [{name: 'Title'}]}) }
+      it { expect(result).to eq(articles: [{name: 'Title'}]) }
     end
 
     context 'when collection is empty' do
       let(:object) { double(:dummy, articles: []) }
 
-      it { expect(result).to eq({articles: []}) }
+      it { expect(result).to eq(articles: []) }
     end
 
     context 'when collection is nil' do
       let(:object) { double(:dummy, articles: nil) }
 
-      it { expect(result).to eq({articles: nil}) }
+      it { expect(result).to eq(articles: nil) }
     end
   end
 
@@ -51,7 +51,7 @@ describe Supa::Commands::Collection do
     context 'when collection is returned by object method' do
       let(:object) { double(:dummy, articles: [{name: 'Title'}]) }
 
-      it { expect(result).to eq({articles: [{name: 'Title'}]}) }
+      it { expect(result).to eq(articles: [{name: 'Title'}]) }
     end
 
     context 'when collection is empty' do
@@ -84,19 +84,19 @@ describe Supa::Commands::Collection do
     context 'when collection is returned by object method' do
       let(:object) { double(:dummy, articles: [{name: 'Title'}]) }
 
-      it { expect(result).to eq({articles: [{name: 'Title'}]}) }
+      it { expect(result).to eq(articles: [{name: 'Title'}]) }
     end
 
     context 'when collection is empty' do
       let(:object) { double(:dummy, articles: []) }
 
-      it { expect(result).to eq({articles: []}) }
+      it { expect(result).to eq(articles: []) }
     end
 
     context 'when collection is nil' do
       let(:object) { double(:dummy, articles: nil) }
 
-      it { expect(result).to eq({articles: []}) }
+      it { expect(result).to eq(articles: []) }
     end
   end
 
@@ -117,7 +117,7 @@ describe Supa::Commands::Collection do
     context 'when collection is returned by object method' do
       let(:object) { double(:dummy, articles: [{name: 'Title'}]) }
 
-      it { expect(result).to eq({articles: [{name: 'Title'}]}) }
+      it { expect(result).to eq(articles: [{name: 'Title'}]) }
     end
 
     context 'when collection is empty' do

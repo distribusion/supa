@@ -62,7 +62,7 @@ module Supa
       @options[:empty_when_nil] ||= false
     end
 
-    def convert_to_empty_object(object)
+    def convert_to_empty_object(_object)
       raise NotImplementedError
     end
 
