@@ -26,10 +26,10 @@ module Supa
       end
 
       def hide?
-        return hide_when_empty? if value.nil?
+        return hide_when_empty? unless value
         return false unless value.is_a?(Array)
 
-        not_nil_value.any? ? false : hide_when_empty?
+        value.any? ? false : hide_when_empty?
       end
     end
   end
