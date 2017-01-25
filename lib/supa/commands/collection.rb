@@ -5,14 +5,13 @@ module Supa
         return if hide?
 
         define_tree
-        return if !value
+        return unless value
 
         value.each do |element|
           @tree[@name] << {}
 
           Supa::Builder.new(element,
-            representer: @representer, tree: @tree[@name][-1]
-          ).instance_exec(&@block)
+            representer: @representer, tree: @tree[@name][-1]).instance_exec(&@block)
         end
       end
 
