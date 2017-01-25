@@ -17,12 +17,8 @@ module Supa
       private
 
       def value
+        return {} if !dynamic_value && empty_when_nil?
         dynamic_value
-      end
-
-      def not_nil_value
-        return {} if value.nil?
-        value
       end
 
       def hide?

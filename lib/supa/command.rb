@@ -15,13 +15,24 @@ module Supa
 
     private
 
-    def midified_value
+    def dynamic_value
+      exec_on_representer? ? value_from_representer : value_from_object
+    end
+
+    def value_from_object
+      return @subject[getter] if @subject.is_a?(Hash)
+      @subject.send(getter) if @subject.respond_to?(getter)
+    end
+
+    def value_from_representer
+      @representer.send(getter)
+    end
+
+    def processed_value
       with_modifier? ? @representer.send(modifier, value) : value
     end
 
-    def midified_not_nil_value
-      with_modifier? ? @representer.send(modifier, not_nil_value) : not_nil_value
-    end
+    # --------------------------------------------------------------------------
 
     def modifier
       @options[:modifier]
@@ -31,21 +42,8 @@ module Supa
       !@options[:modifier].nil?
     end
 
-    def dynamic_value
-      exec_on_representer? ? value_from_representer : value_from_object
-    end
-
     def exec_on_representer?
       @options[:exec_context] == :representer
-    end
-
-    def value_from_object
-      return @subject[getter] if @subject.is_a?(Hash)
-      return @subject.send(getter) if @subject.respond_to?(getter)
-    end
-
-    def value_from_representer
-      @representer.send(getter)
     end
 
     def getter
@@ -58,11 +56,6 @@ module Supa
 
     def empty_when_nil?
       @options.fetch(:empty_when_nil, false)
-    end
-
-    def processed_value
-      return midified_not_nil_value if empty_when_nil?
-      midified_value
     end
 
     def hide?
