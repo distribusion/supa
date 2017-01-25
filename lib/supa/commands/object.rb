@@ -16,9 +16,9 @@ module Supa
 
       private
 
-      def flagged_value(raw_value)
-        return {} if !raw_value && empty_when_nil?
-        raw_value
+      def apply_render_flags(val)
+        return {} if !val && empty_when_nil?
+        val
       end
 
       def hide?

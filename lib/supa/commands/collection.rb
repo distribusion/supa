@@ -2,23 +2,25 @@ module Supa
   module Commands
     class Collection < Supa::Command
       def represent
-        return @tree[@name] = nil unless value || hide?
         return if hide?
 
-        @tree[@name] = []
+        define_tree
+        return if !value
 
-        Array(value).each do |element|
+        value.each do |element|
           @tree[@name] << {}
 
-          Supa::Builder.new(element, representer: @representer, tree: @tree[@name][-1]).instance_exec(&@block)
+          Supa::Builder.new(element,
+            representer: @representer, tree: @tree[@name][-1]
+          ).instance_exec(&@block)
         end
       end
 
       private
 
-      def flagged_value(raw_value)
-        return [] if !raw_value && empty_when_nil?
-        raw_value
+      def apply_render_flags(val)
+        return [] if !val && empty_when_nil?
+        val
       end
 
       def hide?
@@ -26,6 +28,10 @@ module Supa
         return false unless value.is_a?(Array)
 
         value.any? ? false : hide_when_empty?
+      end
+
+      def define_tree
+        @tree[@name] = !value ? nil : []
       end
     end
   end

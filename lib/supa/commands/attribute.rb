@@ -4,12 +4,6 @@ module Supa
       def represent
         @tree[@name] = value
       end
-
-      private
-
-      def flagged_value(non_flagged_value)
-        non_flagged_value
-      end
     end
   end
 end

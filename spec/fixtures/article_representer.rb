@@ -38,7 +38,7 @@ module Supa
         end
       end
 
-      collection :included, getter: :author, empty_when_nil: true, hide_when_empty: true do
+      collection :included, getter: :author, modifier: :to_a, empty_when_nil: true, hide_when_empty: true do
         attribute :id
         virtual :type, getter: 'authors'
 
@@ -60,6 +60,10 @@ module Supa
 
     def to_s(value)
       value.to_s
+    end
+
+    def to_a(value)
+      Array(value)
     end
 
     def language

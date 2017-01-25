@@ -247,4 +247,50 @@ describe Supa::Commands::Append do
       expect(result).to eq(articles: [{name: 'Title'}])
     end
   end
+
+  context 'when append after collection is nil' do
+    let(:representer) do
+      Class.new do
+        include Supa::Representable
+
+        define do
+          collection :articles do
+            attribute :name
+          end
+          append :articles, getter: :papers do
+            attribute :name
+          end
+        end
+      end
+    end
+    let(:result) { representer.new(object).to_hash }
+    let(:object) { double(:dummy, articles: [{name: 'Title'}], papers: nil) }
+
+    it 'it shows only articles items' do
+      expect(result).to eq(articles: [{name: 'Title'}])
+    end
+  end
+
+  context 'when append after collection is nil' do
+    let(:representer) do
+      Class.new do
+        include Supa::Representable
+
+        define do
+          collection :articles do
+            attribute :name
+          end
+          append :articles, getter: :papers do
+            attribute :name
+          end
+        end
+      end
+    end
+    let(:result) { representer.new(object).to_hash }
+    let(:object) { double(:dummy, articles: nil, papers: [{name: 'Title 2'}]) }
+
+    it 'it shows only articles items' do
+      expect(result).to eq(articles: [{name: 'Title 2'}])
+    end
+  end
 end

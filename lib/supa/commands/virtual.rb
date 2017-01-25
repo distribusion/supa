@@ -7,8 +7,8 @@ module Supa
 
       private
 
-      def value
-        modifier ? @representer.send(modifier, getter) : getter
+      def raw_value
+        getter
       end
     end
   end
