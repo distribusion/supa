@@ -1,9 +1,9 @@
 module Supa
   class Command
-    def initialize(object, tree:, representer:, name:, options: {}, &block)
-      @object = object
-      @tree = tree
+    def initialize(subject, representer:, tree:, name:, options: {}, &block)
+      @subject = subject
       @representer = representer
+      @tree = tree
       @name = name
       @options = options
       @block = block
@@ -16,41 +16,45 @@ module Supa
     private
 
     def value
-      return instance_exec(&value_accessor) if value_accessor.respond_to?(:call)
-
-      extracted_value = derived_value_from_object(@object) || derived_value_from_object(@representer)
-      extracted_value ||= literal_value
-
-      raise_no_method_error(value_accessor) if extracted_value.nil?
-      extracted_value
+      return @representer.send(@options[:modifier], apply_render_flags(raw_value)) if @options[:modifier]
+      apply_render_flags(raw_value)
     end
 
-    def value_accessor
-      @value_accessor ||= @options.fetch(:getter, @name)
+    def apply_render_flags(val)
+      val
     end
 
-    def derived_value_from_object(object)
-      if value_accessor.respond_to?(:to_sym) && object.respond_to?(value_accessor)
-        object.send(value_accessor.to_sym)
-      elsif object.is_a?(Hash)
-        object.dig(value_accessor)
-      end
+    def raw_value
+      exec_on_representer? ? value_from_representer : value_from_subject
     end
 
-    def literal_value
-      return if value_accessor.respond_to?(:call)
-      value_accessor unless value_accessor.is_a?(Symbol) || value_accessor.is_a?(Enumerable)
+    def value_from_subject
+      return @subject[getter] if @subject.is_a?(Hash)
+      @subject.send(getter) if @subject
     end
 
-    def raise_no_method_error(method_sym)
-      raise NoMethodError, "undefined method `#{method_sym}' for #{@object} or #{@representer}"
+    def value_from_representer
+      @representer.send(getter)
     end
 
-    def method_missing(method_sym, *args, &block)
-      return @representer.send(method_sym, *args, &block) if @representer.respond_to?(method_sym)
-      return @object.send(method_sym, *args, &block) if @object.respond_to?(method_sym)
+    def exec_on_representer?
+      @options[:exec_context] == :representer
+    end
 
-      raise_no_method_error(method_sym)
+    def getter
+      @options[:getter] || @name
+    end
+
+    def hide_when_empty?
+      @options.fetch(:hide_when_empty, false)
+    end
+
+    def empty_when_nil?
+      @options.fetch(:empty_when_nil, false)
+    end
+
+    def hide?
+      false
     end
   end
 end

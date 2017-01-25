@@ -1,3 +1,4 @@
+# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'supa/version'
@@ -6,11 +7,12 @@ Gem::Specification.new do |spec|
   spec.name          = 'supa'
   spec.version       = Supa::VERSION
   spec.platform      = Gem::Platform::RUBY
-  spec.authors       = ['Andrey Duplichev', 'Jan Rietema', 'Jakub Gorzelak']
+  spec.authors       = ['dasnotme', 'Jan Rietema', 'Jakub Gorzelak', 'Damir Mukimov']
   spec.email         = %w(
-    andrey.duplichev@distribusion.com
+    info@distribusion.com
     jan.rietema@distribusion.com
     jakub.gorzelak@distribusion.com
+    damir.mukimov@distribusion.com
   )
 
   spec.summary       = 'Ruby object → JSON serialization.'

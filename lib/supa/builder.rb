@@ -1,26 +1,24 @@
 module Supa
   class Builder
-    COMMANDS = %w(attribute object namespace collection).freeze
+    COMMANDS = %w(attribute virtual object namespace collection append).freeze
+
+    def initialize(subject, representer:, tree:)
+      @subject = subject
+      @representer = representer
+      @tree = tree
+    end
 
     COMMANDS.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
 
-      define_method command do |name, options = {}, &block|
-        klass.new(
-          @object,
-          tree: @tree,
+      define_method(command) do |name, options = {}, &block|
+        klass.new(@subject,
           representer: @representer,
+          tree: @tree,
           name: name,
           options: options,
-          &block
-        ).represent
+          &block).represent
       end
-    end
-
-    def initialize(object, tree:, representer:)
-      @object = object
-      @tree = tree
-      @representer = representer
     end
 
     def to_hash

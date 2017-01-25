@@ -2,19 +2,21 @@
 engines:
   duplication:
     enabled: true
-    exclude_paths:
-      - spec/
     config:
       languages:
         ruby:
           mass_threshold: 30
+    exclude_paths:
+      - spec/
   rubocop:
     enabled: true
   reek:
     enabled: true
+    exclude_paths:
+      - spec/
 ratings:
   paths:
+  - Gemfile.lock
   - "**.rb"
 exclude_paths:
   - tmp/
-  - spec/fixtures/

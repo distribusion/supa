@@ -1,16 +1,36 @@
 module Supa
   module Commands
     class Collection < Supa::Command
-      include Supa::Commands::Collectionable
-
       def represent
-        @tree[@name] = [] unless @options[:squash]
+        return if hide?
 
-        collection.each do |element|
+        define_tree
+        return unless value
+
+        value.each do |element|
           @tree[@name] << {}
 
-          Supa::Builder.new(element, tree: @tree[@name][-1], representer: @representer).instance_exec(&@block)
+          Supa::Builder.new(element,
+            representer: @representer, tree: @tree[@name][-1]).instance_exec(&@block)
         end
+      end
+
+      private
+
+      def apply_render_flags(val)
+        return [] if !val && empty_when_nil?
+        val
+      end
+
+      def hide?
+        return hide_when_empty? unless value
+        return false unless value.is_a?(Array)
+
+        value.any? ? false : hide_when_empty?
+      end
+
+      def define_tree
+        @tree[@name] = !value ? nil : []
       end
     end
   end
