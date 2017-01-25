@@ -57,6 +57,8 @@ module Supa
 
       if value.is_a?(Array)
         not_nil_value.any? ? false : @options[:hide_when_empty]
+      elsif value.is_a?(Hash)
+        not_nil_value.empty? ? @options[:hide_when_empty] : false
       else
         value.nil? ? @options[:hide_when_empty] : false
       end

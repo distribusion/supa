@@ -21,7 +21,7 @@ module Supa
       end
 
       def not_nil_value
-        return '' if value.nil?
+        return {} if value.nil?
         value
       end
     end

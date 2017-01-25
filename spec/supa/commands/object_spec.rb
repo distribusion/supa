@@ -27,6 +27,12 @@ describe Supa::Commands::Object do
 
       it { expect(result).to eq(article: nil) }
     end
+
+    context 'when object is empty' do
+      let(:object) { double(:dummy, article: {}) }
+
+      it { expect(result).to eq(article: {:name=>nil, :cover=>nil}) }
+    end
   end
 
   context 'when option to hide empty object is true' do
@@ -52,6 +58,12 @@ describe Supa::Commands::Object do
 
     context 'when object is nil' do
       let(:object) { double(:dummy, article: nil) }
+
+      it { expect(result).to eq({}) }
+    end
+
+    context 'when object is empty' do
+      let(:object) { double(:dummy, article: {}) }
 
       it { expect(result).to eq({}) }
     end
@@ -83,6 +95,12 @@ describe Supa::Commands::Object do
 
       it { expect(result).to eq(article: {name: nil, cover: nil}) }
     end
+
+    context 'when object is empty' do
+      let(:object) { double(:dummy, article: {}) }
+
+      it { expect(result).to eq(article: {name: nil, cover: nil}) }
+    end
   end
 
   context 'when option conver nil to empty object and hide when empty are true' do
@@ -108,6 +126,12 @@ describe Supa::Commands::Object do
 
     context 'when object is nil' do
       let(:object) { double(:dummy, article: nil) }
+
+      it { expect(result).to eq({}) }
+    end
+
+    context 'when object is empty' do
+      let(:object) { double(:dummy, article: {}) }
 
       it { expect(result).to eq({}) }
     end
