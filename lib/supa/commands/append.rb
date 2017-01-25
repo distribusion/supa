@@ -2,7 +2,7 @@ module Supa
   module Commands
     class Append < Supa::Command
       def represent
-        return @tree[@name] = nil if !processed_value && !hide_when_empty?
+        return @tree[@name] = nil unless processed_value || hide_when_empty?
         return if hide_when_empty?
 
         @tree[@name] ||= []

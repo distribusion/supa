@@ -75,11 +75,8 @@ module Supa
     end
 
     def processed_value
-      if convert_nil_to_object?
-        midified_not_nil_value
-      else
-        midified_value
-      end
+      return midified_not_nil_value if convert_nil_to_object?
+      midified_value
     end
   end
 end
