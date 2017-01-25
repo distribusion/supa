@@ -11,7 +11,7 @@ module Supa
     COMMANDS.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
 
-      define_method command do |name, options = {}, &block|
+      define_method(command) do |name, options = {}, &block|
         klass.new(@subject,
           representer: @representer,
           tree: @tree,

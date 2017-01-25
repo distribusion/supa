@@ -56,9 +56,5 @@ module Supa
     def hide?
       false
     end
-
-    def convert_to_empty_object(_object)
-      raise NotImplementedError
-    end
   end
 end
