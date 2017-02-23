@@ -16,8 +16,12 @@ module Supa
     private
 
     def value
-      return @representer.send(@options[:modifier], apply_render_flags(raw_value)) if @options[:modifier]
-      apply_render_flags(raw_value)
+      return @value if defined?(@value)
+      @value = modifier ? @representer.send(modifier, apply_render_flags(raw_value)) : apply_render_flags(raw_value)
+    end
+
+    def modifier
+      @options[:modifier]
     end
 
     def apply_render_flags(val)
