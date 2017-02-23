@@ -28,4 +28,29 @@ describe Supa::Commands::Attribute do
       it { expect(render_result).to eq('zaphod') }
     end
   end
+
+  context 'when :hide_when_nil option is set to true' do
+    let(:representer) do
+      Class.new do
+        include Supa::Representable
+
+        define do
+          attribute :name, hide_when_nil: true
+        end
+      end
+    end
+    let(:result) { representer.new(object).to_hash }
+
+    context 'when object method returns non-nil value' do
+      let(:object) { double(:dummy, name: 'John') }
+
+      it { expect(result).to eq(name: 'John') }
+    end
+
+    context 'when object method returns nil' do
+      let(:object) { double(:dummy, name: nil) }
+
+      it { expect(result).to eq({}) }
+    end
+  end
 end
