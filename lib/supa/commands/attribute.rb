@@ -10,7 +10,7 @@ module Supa
       private
 
       def hide?
-        value.nil? && hide_when_nil?
+        value.is_a?(NilClass) && hide_when_nil?
       end
 
       def hide_when_nil?
