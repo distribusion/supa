@@ -1,5 +1,7 @@
 module Supa
   class Command
+    UnsupportedModifier = Class.new(StandardError)
+
     def initialize(subject, representer:, tree:, name:, options: {}, &block)
       @subject = subject
       @representer = representer
@@ -21,7 +23,19 @@ module Supa
     end
 
     def modifier
-      @options[:modifier]
+      return @modifier if defined?(@modifier)
+      @modifier = @options[:modifier]
+      validate_modifier!
+      @modifier
+    end
+
+    def validate_modifier!
+      raise_unsupported_modifier_error if @modifier && !@modifier.is_a?(Symbol)
+    end
+
+    def raise_unsupported_modifier_error
+      raise UnsupportedModifier,
+        "Object #{@modifier.inspect} is not a valid modifier. Please provide symbolized method name."
     end
 
     def apply_render_flags(val)
