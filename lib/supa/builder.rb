@@ -21,8 +21,10 @@ module Supa
       end
     end
 
-    def attributes(*names)
-      Supa::Commands::Attributes.new(@subject, representer: @representer, tree: @tree, names: names).represent
+    def attributes(names, options = {})
+      Supa::Commands::Attributes.new(
+        @subject, representer: @representer, tree: @tree, names: names, options: options
+      ).represent
     end
 
     def to_hash

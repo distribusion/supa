@@ -29,10 +29,10 @@ module Supa
     end
 
     def raw_value
-      exec_on_representer? ? value_from_representer : value_from_subject(getter)
+      exec_on_representer? ? value_from_representer : value_from_subject
     end
 
-    def value_from_subject(getter)
+    def value_from_subject
       return @subject[getter] if @subject.is_a?(Hash)
       @subject.send(getter) if @subject
     end
