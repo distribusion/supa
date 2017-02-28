@@ -10,11 +10,7 @@ module Supa
       private
 
       def hide?
-        value.nil? && hide_when_nil?
-      end
-
-      def hide_when_nil?
-        @options.fetch(:hide_when_nil, false)
+        value.nil? && hide_when_empty?
       end
     end
   end

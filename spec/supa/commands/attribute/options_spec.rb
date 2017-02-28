@@ -53,13 +53,13 @@ describe Supa::Commands::Attribute, 'options' do
     end
   end
 
-  context 'when :hide_when_nil option is set to true' do
+  context 'when :hide_when_empty option is set to true' do
     let(:representer) do
       Class.new do
         include Supa::Representable
 
         define do
-          attribute :name, hide_when_nil: true
+          attribute :name, hide_when_empty: true
         end
       end
     end
