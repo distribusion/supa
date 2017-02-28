@@ -25,17 +25,11 @@ module Supa
     def modifier
       return @modifier if defined?(@modifier)
       @modifier = @options[:modifier]
-      validate_modifier!
+      if @modifier && !@modifier.is_a?(Symbol)
+        raise UnsupportedModifier,
+          "Object #{@modifier.inspect} is not a valid modifier. Please provide symbolized method name."
+      end
       @modifier
-    end
-
-    def validate_modifier!
-      raise_unsupported_modifier_error if @modifier && !@modifier.is_a?(Symbol)
-    end
-
-    def raise_unsupported_modifier_error
-      raise UnsupportedModifier,
-        "Object #{@modifier.inspect} is not a valid modifier. Please provide symbolized method name."
     end
 
     def apply_render_flags(val)
