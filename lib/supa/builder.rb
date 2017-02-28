@@ -21,17 +21,10 @@ module Supa
       end
     end
 
-    def attributes(*args)
-      options = if args[-1].is_a?(Hash)
-        args.pop.select { |option, _| [:hide_when_empty].include?(option) }
-      else
-        {}
-      end
-      names = args
-
-      names.each do |name|
-        attribute(name, options)
-      end
+    def attributes(names, options = {})
+      Supa::Commands::Attributes.new(
+        @subject, representer: @representer, tree: @tree, names: names, options: options
+      ).represent
     end
 
     def to_hash
