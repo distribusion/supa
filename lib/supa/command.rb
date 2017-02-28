@@ -19,7 +19,8 @@ module Supa
 
     def value
       return @value if defined?(@value)
-      @value = modifier ? @representer.send(modifier, apply_render_flags(raw_value)) : apply_render_flags(raw_value)
+      value = apply_render_flags(raw_value)
+      @value = modifier ? @representer.send(modifier, value) : value
     end
 
     def modifier
