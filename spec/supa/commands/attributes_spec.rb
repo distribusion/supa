@@ -7,7 +7,7 @@ describe Supa::Commands::Attributes do
       include Supa::Representable
 
       define do
-        attributes [:first_name, :last_name]
+        attributes :first_name, :last_name
       end
     end
   end

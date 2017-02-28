@@ -265,7 +265,7 @@ class ExampleRepresenter
   include Supa::Representable
 
   define do
-    attributes [:first_name, :last_name], hide_when_nil: true
+    attributes :first_name, :last_name, hide_when_empty: true
   end
 end
 

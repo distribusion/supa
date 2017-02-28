@@ -1,16 +1,8 @@
 module Supa
   module Commands
     class Attributes < Supa::Command
-      def initialize(subject, representer:, tree:, names:, options:)
-        @subject = subject
-        @representer = representer
-        @tree = tree
-        @names = names
-        @options = options
-      end
-
       def represent
-        @names.each do |name|
+        names.each do |name|
           Supa::Commands::Attribute.new(
             @subject, representer: @representer, tree: @tree, name: name, options: attribute_options
           ).represent
@@ -19,8 +11,12 @@ module Supa
 
       private
 
+      def names
+        @name
+      end
+
       def attribute_options
-        @attribute_options ||= { hide_when_nil: @options[:hide_when_nil] }
+        @attribute_options ||= { hide_when_empty: @options[:hide_when_empty] }
       end
     end
   end
