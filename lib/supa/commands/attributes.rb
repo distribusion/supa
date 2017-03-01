@@ -4,7 +4,7 @@ module Supa
       def represent
         names.each do |name|
           Supa::Commands::Attribute.new(
-            @subject, representer: @representer, tree: @tree, name: name, options: attribute_options
+            @subject, representer: @representer, tree: @tree, name: name, options: @options
           ).represent
         end
       end
@@ -13,10 +13,6 @@ module Supa
 
       def names
         @name
-      end
-
-      def attribute_options
-        @attribute_options ||= { hide_when_empty: @options[:hide_when_empty] }
       end
     end
   end
