@@ -17,8 +17,7 @@ module Supa
         virtual :type, getter: 'articles'
 
         namespace :attributes do
-          attribute :title
-          attribute :text
+          attributes :title, :text
         end
 
         namespace :relationships do

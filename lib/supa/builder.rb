@@ -1,6 +1,6 @@
 module Supa
   class Builder
-    COMMANDS = %w(attribute virtual object namespace collection append).freeze
+    COMMANDS_WITH_DEFAULT_INTERFACE = %w(attribute virtual object namespace collection append).freeze
 
     def initialize(subject, representer:, tree:)
       @subject = subject
@@ -8,10 +8,10 @@ module Supa
       @tree = tree
     end
 
-    COMMANDS.each do |command|
+    COMMANDS_WITH_DEFAULT_INTERFACE.each do |command|
       klass = Supa::Commands.const_get(command.capitalize)
 
-      define_method(command) do |name, options = {}, &block|
+      define_method(command) do |name, **options, &block|
         klass.new(@subject,
           representer: @representer,
           tree: @tree,
@@ -19,6 +19,12 @@ module Supa
           options: options,
           &block).represent
       end
+    end
+
+    def attributes(*names, **options)
+      Supa::Commands::Attributes.new(
+        @subject, representer: @representer, tree: @tree, name: names, options: options
+      ).represent
     end
 
     def to_hash
