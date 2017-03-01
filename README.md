@@ -256,6 +256,35 @@ ExampleRepresenter.new(example).to_hash
 
 ```
 
+### `attributes`
+
+It retrieves attributes from correspondingly named instance methods or hash keys when the represented object is a `Hash`.
+
+```ruby
+class ExampleRepresenter
+  include Supa::Representable
+
+  define do
+    attributes :first_name, :last_name, hide_when_empty: true
+  end
+end
+
+class Person
+  attr_accessor :first_name, :last_name
+end
+
+example = Person.new
+example.first_name = 'Heidi'
+example.last_name = 'Shepherd'
+
+ExampleRepresenter.new(example).to_hash
+
+  #=> {
+  #=>   first_name: 'Heidi',
+  #=    last_name: 'Shepherd'
+  #=> }
+```
+
 ### `virtual`
 
 Virtual is an attribute that doesn't exist in representing object and defind as `string`.
