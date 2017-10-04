@@ -1,3 +1,5 @@
+require 'oj'
+
 require 'supa/version'
 require 'supa/representable'
 require 'supa/command'
