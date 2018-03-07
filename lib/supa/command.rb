@@ -21,6 +21,9 @@ module Supa
       return @value if defined?(@value)
       value = apply_render_flags(raw_value)
       @value = modifier ? @representer.send(modifier, value) : value
+    rescue Exception => e
+      require 'binding.pry'
+      binding.pry
     end
 
     def modifier

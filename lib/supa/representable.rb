@@ -14,6 +14,9 @@ module Supa
         Supa::Builder.new(representee, representer: self, tree: {}).tap do |builder|
           builder.instance_exec(&self.class.definition)
         end.to_hash
+      rescue Exception => e
+        require 'binding.pry'
+        binding.pry
       end
 
       def to_json

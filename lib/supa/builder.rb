@@ -25,6 +25,9 @@ module Supa
       Supa::Commands::Attributes.new(
         @subject, representer: @representer, tree: @tree, name: names, options: options
       ).represent
+    rescue Exception => e
+      require 'binding.pry'
+      binding.pry      
     end
 
     def to_hash
