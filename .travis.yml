@@ -13,7 +13,9 @@ addons:
 cache:
   - bundler
 
-before_install: gem install bundler -v 1.13.7
+before_install:
+  - gem install bundler -v 1.13.7
+  - bundle _1.13.7_ install
 script:
   - bundle exec rake
 after_success:
