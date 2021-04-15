@@ -44,7 +44,7 @@ module Supa
 
     def value_from_subject
       return @subject[getter] if @subject.is_a?(Hash)
-      @subject.send(getter) if @subject
+      @subject.send(getter) if @subject.respond_to?(getter)
     end
 
     def value_from_representer
