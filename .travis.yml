@@ -8,7 +8,7 @@ notifications:
 
 addons:
   code_climate:
-    repo_token: c6b103baa63eb34b685509ac0309db2e22227c8efa1d4b7af5504e2dd3444a1f
+    repo_token: 1b705fb5cd2bfbc456a02d3acf64494b9363ffca79ed22690b96c49546cd35c6
 
 cache:
   - bundler
