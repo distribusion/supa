@@ -1,20 +1,21 @@
-sudo: false
+os: linux
+dist: xenial
 language: ruby
 rvm:
-  - 2.3.1
-
+  - 2.6.5
 notifications:
   email: false
-
-addons:
-  code_climate:
-    repo_token: ad743cd1c267d4a84bfa620869f906a68efba51baa3aadc0638b88330ce3ab3a
-
-cache:
-  - bundler
-
-before_install: gem install bundler -v 1.13.7
+before_install:
+  - gem install bundler -v 2.1.4
+  - bundle config gems.distribusion.com $GEMSERVER_USER:$GEMSERVER_PASSWORD
+  - bundle config rubygems.distribusion.com $RUBYGEMS_TOKEN
+before_script:
+  - cp .env.example .env
+  - if [ ! -f ./vendor/cc-test-reporter ]; then
+    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./vendor/cc-test-reporter;
+    chmod +x ./vendor/cc-test-reporter;
+    fi
 script:
   - bundle exec rake
 after_success:
-  - bundle exec codeclimate-test-reporter
+  - ./vendor/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
