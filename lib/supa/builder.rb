@@ -32,7 +32,7 @@ module Supa
     end
 
     def to_json
-      Oj.dump(to_hash, mode: :strict)
+      Supa::JsonDumper.dump(to_hash)
     end
   end
 end

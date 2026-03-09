@@ -1,6 +1,5 @@
-require 'oj'
-
 require 'supa/version'
+require 'supa/json_dumper'
 require 'supa/representable'
 require 'supa/command'
 require 'supa/commands/attribute'
