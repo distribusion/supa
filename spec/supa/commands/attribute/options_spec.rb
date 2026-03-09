@@ -36,7 +36,7 @@ describe Supa::Commands::Attribute, 'options' do
 
       it 'raises error' do
         expect { render_result }.to raise_error(
-          NoMethodError, /undefined method `to_string' for #<Supa::ArticleRepresenter/
+          NoMethodError, /undefined method .to_string. for .*Supa::ArticleRepresenter/
         )
       end
     end

@@ -10,5 +10,6 @@ require 'supa'
 # require "pry"
 # Pry.start
 
-require 'pry-byebug'
+require 'pry-byebug' if RUBY_ENGINE == 'ruby'
+require 'pry-debugger-jruby' if RUBY_ENGINE == 'jruby'
 Pry.start

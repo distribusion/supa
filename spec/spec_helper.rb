@@ -6,7 +6,8 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'supa'
 
 require 'json'
-require 'pry-byebug'
+require 'pry-byebug' if RUBY_ENGINE == 'ruby'
+require 'pry-debugger-jruby' if RUBY_ENGINE == 'jruby'
 require 'rspec/core'
 require 'rspec/benchmark'
 require 'rspec/expectations'
